@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\Scenes">
+      <UniqueIdentifier>{bb75e9e9-d1ac-414b-ba70-e9b8e0347924}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Notes">
+      <UniqueIdentifier>{3ca7a3b8-d4f9-4dc3-8e0b-9099b11a170e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Utilities">
+      <UniqueIdentifier>{4e75b935-d600-43ae-8355-2c0cde21f15b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\UI">
+      <UniqueIdentifier>{dcf5ec61-9c4d-41c0-90f5-57efe3d99c44}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="garbage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="opening_scene.h">
+      <Filter>头文件\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_manager.h">
+      <Filter>头文件\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="select_songs_scene.h">
+      <Filter>头文件\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="setting_scene.h">
+      <Filter>头文件\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="menu_scene.h">
+      <Filter>头文件\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="gaming_scene.h">
+      <Filter>头文件\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>头文件\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="hold.h">
+      <Filter>头文件\Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="note.h">
+      <Filter>头文件\Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="click.h">
+      <Filter>头文件\Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities.h">
+      <Filter>头文件\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>头文件\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcesManager.h">
+      <Filter>头文件\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlas.h">
+      <Filter>头文件\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>头文件\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="box_for_setting.h">
+      <Filter>头文件\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Hatsune.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Hatsune.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
