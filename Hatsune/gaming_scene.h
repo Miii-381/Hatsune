@@ -541,7 +541,10 @@ public:
 			{
 				if (is_debug)
 					std::cout << " D_pressed ";
-				
+
+				if(key_status.status_D_now == false)
+					mciSendString(_T("play click_hit from 0"), NULL, 0, NULL);
+
 				key_status.status_D_now = true;
 				if (!line_D_display.empty())
 				{
@@ -556,6 +559,9 @@ public:
 			{
 				if (is_debug)
 					std::cout << " F_pressed ";
+
+				if (key_status.status_F_now == false)
+					mciSendString(_T("play click_hit from 0"), NULL, 0, NULL);
 
 				key_status.status_F_now = true;
 				if (!line_F_display.empty())
@@ -572,6 +578,9 @@ public:
 				if (is_debug)
 					std::cout << " J_pressed ";
 
+				if (key_status.status_J_now == false)
+					mciSendString(_T("play click_hit from 0"), NULL, 0, NULL);
+
 				key_status.status_J_now = true;
 				if (!line_J_display.empty())
 				{
@@ -585,6 +594,9 @@ public:
 			{
 				if (is_debug)
 					std::cout << " K_pressed ";
+
+				if (key_status.status_K_now == false)
+					mciSendString(_T("play click_hit from 0"), NULL, 0, NULL);
 
 				key_status.status_K_now = true;
 				if (!line_K_display.empty())
@@ -726,6 +738,7 @@ public:
 				key_status.status_D_now = false;
 				if (!line_D_display.empty() && line_D_display.front()->get_type() == Note::NoteType::Hold)
 				{
+					// mciSendString(_T("play click_hit from 0"), NULL, 0, NULL);     由于程序判断逻辑的顺序性，导致hold松键和其他音符按键处于一起的时候，音效会出现微小演出，暂时没法解决，除非重构判断逻辑或者存储之前按键状态，待所有判断逻辑执行完之后统一播放按键音效
 					line_D_display.front()->judge(game_time, is_debug, msg.message);
 					judge_display = line_D_display.front()->judge_level;
 					line_D_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus); 
@@ -740,6 +753,7 @@ public:
 				key_status.status_F_now = false;
 				if (!line_F_display.empty() && line_F_display.front()->get_type() == Note::NoteType::Hold)
 				{
+					// mciSendString(_T("play click_hit from 0"), NULL, 0, NULL);
 					line_F_display.front()->judge(game_time, is_debug, msg.message);
 					judge_display = line_F_display.front()->judge_level;
 					line_F_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
@@ -754,6 +768,7 @@ public:
 				key_status.status_J_now = false;
 				if (!line_J_display.empty() && line_J_display.front()->get_type() == Note::NoteType::Hold)
 				{
+					// mciSendString(_T("play click_hit from 0"), NULL, 0, NULL);
 					line_J_display.front()->judge(game_time, is_debug, msg.message);
 					judge_display = line_J_display.front()->judge_level;
 					line_J_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
@@ -768,6 +783,7 @@ public:
 				key_status.status_K_now = false;
 				if (!line_K_display.empty() && line_K_display.front()->get_type() == Note::NoteType::Hold)
 				{
+					// mciSendString(_T("play click_hit from 0"), NULL, 0, NULL);
 					line_K_display.front()->judge(game_time, is_debug, msg.message);
 					judge_display = line_K_display.front()->judge_level;
 					line_K_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
