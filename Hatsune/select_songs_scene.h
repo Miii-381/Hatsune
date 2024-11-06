@@ -123,14 +123,14 @@ public:
 			region_exit_button.right = region_exit_button.left + img_exit_button_idle.getwidth();
 		}
 
-		play_song(current_song);
+		play_song(current_song, info.song_chorus_time);
 	}
 
 	void on_draw(bool is_debug)
 	{
 		if (is_debug)
 		{
-			printf("%d %s %s %s %s ", info.ID, info.singer_name, info.song_name, info.song_length, info.Level[current_level].c_str());
+			std::cout << info.ID << info.singer_name << info.song_name << info.song_length << info.Level[current_level] << std::endl;
 			printf("select_songs_scene\n");
 		}
 
@@ -156,7 +156,7 @@ public:
 		outtextxy_shaded(pos_text.x, pos_text.y, current_song_display);
 		outtextxy_shaded(pos_text.x, pos_text.y + 35, info.song_name);
 		outtextxy_shaded(pos_text.x, pos_text.y + 70, info.singer_name);
-		outtextxy_shaded(pos_text.x, pos_text.y + 105, info.song_length);
+		outtextxy_shaded(pos_text.x, pos_text.y + 105, song_length);
 		outtextxy_shaded(pos_text.x, pos_text.y + 140, info.Level[current_level].c_str());
 	}
 
@@ -177,13 +177,13 @@ public:
 				{
 					stop_song(current_song);
 					current_song = SONGS_NUM;
-					play_song(current_song);
+					play_song(current_song, info.song_chorus_time);
 				}
 				else
 				{
 					stop_song(current_song);
 					current_song -= 1;
-					play_song(current_song);
+					play_song(current_song, info.song_chorus_time);
 				}
 				is_need_switch_song = true;
 				current_level = 0;
@@ -195,13 +195,13 @@ public:
 				{
 					stop_song(current_song);
 					current_song = 1;
-					play_song(current_song);
+					play_song(current_song, info.song_chorus_time);
 				}
 				else
 				{
 					stop_song(current_song);
 					current_song += 1;
-					play_song(current_song);
+					play_song(current_song, info.song_chorus_time);
 				}
 				is_need_switch_song = true;
 				current_level = 0;
@@ -297,8 +297,9 @@ public:
 			temp = str.substr(now, length);
 			switch (count)
 			{
-			case 0:											// 歌手名
+			case 0:											// 歌曲ID
 				info.ID = std::stoi(temp);
+				Song_length_get();
 				if (is_debug) std::cout << "ID complete" << std::endl;
 				break;
 			case 1:											// 歌曲名
@@ -309,14 +310,14 @@ public:
 				std::copy(temp.begin(), temp.end(), info.singer_name);
 				if (is_debug) std::cout << "singer_name complete" << std::endl;
 				break;
-			case 3:											// 歌曲长度
-				std::copy(temp.begin(), temp.end(), info.song_length);
+			case 3:											// 歌曲副歌时间点
+				info.song_chorus_time = std::stoi(temp);
 				if (is_debug) std::cout << "song_length complete" << std::endl;
 				break;
 			};
 			if (count > 3)
 			{
-				info.Level.push_back(temp);						 // 难度
+				info.Level.push_back(temp);					// 难度
 				if (is_debug) std::cout << "song_level complete" << std::endl;
 			}
 			now = next + 3;
@@ -329,6 +330,7 @@ public:
 	void add_intro()
 	{
 		TCHAR temp[512];
+		TCHAR temp_str[512];
 		strncpy_s(temp, info.song_name, _countof(info.song_name));
 		sprintf_s(info.song_name, "曲名：%s", temp);
 		memset(temp, '\0', sizeof(temp));
@@ -338,20 +340,20 @@ public:
 		memset(temp, '\0', sizeof(temp));
 
 		int s = 0, m = 0, h = 0;
-		msToTime(atoi(info.song_length), s, m, h);
+		msToTime(info.song_length, s, m, h);
 		if (h == 0)
 		{
 			if (m < 10)
-				sprintf_s(info.song_length, "歌曲长度：%d:%02d", m, s);
+				_stprintf_s(song_length, "歌曲长度：%d:%02d", m, s);
 			else
-				sprintf_s(info.song_length, "歌曲长度：%02d:%02d", m, s);
+				_stprintf_s(song_length, "歌曲长度：%02d:%02d", m, s);
 		}
 		else
 		{
 			if (m < 10) 
-				sprintf_s(info.song_length, "歌曲长度：%d:%d:%02d", h, m, s);
+				_stprintf_s(song_length, "歌曲长度：%d:%d:%02d", h, m, s);
 			else
-				sprintf_s(info.song_length, "歌曲长度：%d:%02d:%02d", h, m, s);
+				_stprintf_s(song_length, "歌曲长度：%d:%02d:%02d", h, m, s);
 		}
 
 		for (int i = 0; i < info.Level.size(); i++)
@@ -368,16 +370,26 @@ public:
 	// 音乐时间显示转换
 	void msToTime(long long milliseconds, int& s, int& m, int& h)
 	{
-		_int64 seconds = milliseconds / 1000;
+		int seconds = milliseconds / 1000;
 		h = seconds / 3600;
 		m = (seconds % 3600) / 60;
 		s = seconds % 60;
+	}
+
+	void Song_length_get()
+	{
+		TCHAR temp[64];
+		TCHAR temp_length[256];
+		_stprintf_s(temp, _T("status song_%d length"), info.ID);
+		mciSendString(temp, temp_length , sizeof(temp_length), NULL);
+		info.song_length = strtol(temp_length, NULL, 10); // 暂时不考虑字符集问题
 	}
 
 private:
 	FILE* song_list_ptr;									// 读取谱面文件的指针
 	bool is_loaded = false;									// 是否加载过本场景
 
+	TCHAR song_time[64];									// 歌曲时长
 	IMAGE* current_song_cover;								// 当前歌曲封面图片
 	Button left_arrow_button;								// 向左切歌按钮
 	Button right_arrow_button;								// 向右切歌按钮
@@ -385,12 +397,14 @@ private:
 	Button icon_setting_button;								// 设置按钮
 	Button icon_pause_button;								// 暂停按钮
 	Button exit_button;										// 返回按键
+	Button play_songs_button;								// 歌曲从头开始播放按键
 	RECT region_left_arrow_button = { };					// 向左切歌按钮判定范围
 	RECT region_right_arrow_button = { };					// 向右切歌按钮判定范围
 	RECT region_current_song_button = { };					// 当前歌曲封面判定范围
 	RECT region_icon_setting_button = { };					// 设置按钮判定范围
 	RECT region_icon_pause_button = { };					// 暂停按钮判定范围
 	RECT region_exit_button = { };							// 返回按钮判定范围
+	RECT region_play_songs_button = { };					// 歌曲从头开始播放按键判定范围
 	POINT pos_left_arrow_button = { };						// 向左切歌按钮位置
 	POINT pos_right_arrow_button = { };						// 向右切歌按钮位置
 	POINT pos_current_song_button = { };					// 当前歌曲封面位置（当做按钮处理）
@@ -398,18 +412,21 @@ private:
 	POINT pos_icon_pause_button = { };						// 暂停按钮位置
 	POINT pos_exit_button = { };							// 返回按键位置
 	POINT pos_text = { };									// 文字位置
+	POINT pos_play_songs_button = { };						// 歌曲从头开始播放按键位置
 	bool is_left_arrow_button_clicked = false;				// 向左切歌按钮是否按下
 	bool is_right_arrow_button_clicked = false; 			// 向右切歌按钮
 	bool is_current_song_button_clicked = false;			// 当前歌曲封面按钮
 	bool is_icon_setting_button_clicked = false;			// 设置按钮是否按下
 	bool is_icon_pause_button_clicked = false;				// 暂停按钮是否按下
 	bool is_exit_button_clicked = false;					// 返回按钮是否按下
+	bool is_play_songs_button = false;						// 歌曲从头开始播放按键是否按下
 	bool is_paused = false;									// 是否按下暂停键
 	bool is_need_switch_song = false;						// 是否按键切换了歌曲
 
 	std::vector<std::string> songs_list;					// 原始歌曲信息列表
 	TCHAR current_song_display[20] = { };					// 当前歌曲显示
 	int current_song = 1;									// 当前选择歌曲
+	TCHAR song_length[128];									// 歌曲长度显示
 };
 
 #endif // !_SELECT_SONGS_SCENE_H_

@@ -237,7 +237,7 @@ public:
 			}
 
 			// ¸èÇú½áÊøÅÐ¶¨
-			if (game_time >= atol(origin_info.song_length) && game_start == true && game_end == false)
+			if (game_time >= origin_info.song_length && game_start == true && game_end == false)
 			{
 				game_start = false;
 				game_end = true;

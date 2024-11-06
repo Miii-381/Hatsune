@@ -73,11 +73,24 @@ inline bool CheckMousePosition(RECT region, int x, int y)
 inline void play_song(int current_song)
 {
 	TCHAR path_command[256];
-	_stprintf_s(path_command, _T("setautio song_%d volume to 80"), current_song);
+	_stprintf_s(path_command, _T("setautio song_%d volume to 800"), current_song);	// 也没起作用...
 	printf("%s\n", path_command);
 	mciSendString(path_command, NULL, 0, NULL);
 	memset(path_command, '\0', sizeof(path_command));
 	_stprintf_s(path_command, _T("play song_%d repeat from 0"), current_song);
+	printf("%s\n", path_command);
+	mciSendString(path_command, NULL, 0, NULL);
+}
+
+// 重载播放函数，添加进度选择（好像没用...）
+inline void play_song(int current_song, int pos)
+{
+	TCHAR path_command[256];
+	_stprintf_s(path_command, _T("setautio song_%d volume to 800"), current_song);  // 也没起作用...
+	printf("%s\n", path_command);
+	mciSendString(path_command, NULL, 0, NULL);
+	memset(path_command, '\0', sizeof(path_command));
+	_stprintf_s(path_command, _T("play song_%d from %d repeat"), current_song, pos);
 	printf("%s\n", path_command);
 	mciSendString(path_command, NULL, 0, NULL);
 }
@@ -89,11 +102,11 @@ inline void play_song_no_repeat(int current_song)
 	printf("%s\n", path_command);
 	mciSendString(path_command, NULL, 0, NULL);
 	memset(path_command, '\0', sizeof(path_command));
-	_stprintf_s(path_command, _T("setautio song_%d volume to 80"), current_song);
+	_stprintf_s(path_command, _T("setautio song_%d volume to 800"), current_song);	// 也没起作用...
 	mciSendString(path_command, NULL, 0, NULL);
 }
 
-// 停止播放
+// 停止播放（不知道为什么，在我的程序中，mci停止播放并不会将播放位置移回起始点，需要手动设置...）
 inline void stop_song(int current_song)
 {
 	TCHAR path_command[256];

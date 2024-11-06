@@ -16,7 +16,8 @@ public:
 		int ID = 0;										// 序号
 		TCHAR song_name[300] = { };						// 歌曲名
 		TCHAR singer_name[300] = { };					// 歌手名
-		TCHAR song_length[20] = { };					// 歌曲长度
+		int song_length;								// 歌曲长度
+		int song_chorus_time;							// 副歌时间点
 		std::vector<std::string> Level;					// 难度等级
 	};
 
