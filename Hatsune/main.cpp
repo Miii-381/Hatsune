@@ -176,7 +176,7 @@ void load_game_resources(bool load_all_songs)
 		std::cout << "load_game_resources complete" << std::endl;
 }
 
-// 歌曲音频文件加载（从文件中读取歌曲名称，实现修改歌曲时不用修改源代码的目的）
+// 歌曲音频文件加载（从文件中读取歌曲名称，修改歌曲时不用在源代码中修改）
 void load_songs(bool load_all_songs)
 {
 	std::ifstream file("./resources/beatmaps/songs_name.txt",std::ifstream::in);
