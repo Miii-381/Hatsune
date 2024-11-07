@@ -198,7 +198,7 @@ public:
 					// 音乐播控
 					if (music_play == false)
 					{
-						play_song_no_repeat(origin_info.ID);
+						play_song_no_repeat(origin_info.ID);  // 应该是mci本身的问题或者是音符逻辑堆太多了，会导致游戏刚开始的时候，从过渡态转化到实际游戏时的那一瞬间出现卡顿
 						music_play = true;
 					}
 
