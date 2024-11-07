@@ -183,7 +183,7 @@ void load_songs(bool load_all_songs)
 	if (file.is_open() == false)
 	{
 		perror("fopen error!");
-		MessageBox(GetHWnd(), _T("歌曲数获取错误，请检查后重新启动程序\n歌曲加载文件位于：.\\resources\\beatmaps\\songs_name.txt"), _T("ERROR!"), MB_OK);
+		MessageBox(GetHWnd(), _T("歌曲数获取错误，请检查后重新启动程序\n歌曲加载文件位于：.\\resources\\beatmaps\\songs_name.txt"), _T("ERROR!"), MB_OK | MB_ICONERROR);
 		SendMessage(GetHWnd(), WM_CLOSE, NULL, NULL);
 	}
 

@@ -60,6 +60,8 @@ public:
 			current_scene->get_current_level(select_songs_scene->current_level);
 			break;
 		default:
+			MessageBox(GetHWnd(), _T("³¡¾°ÇĞ»»´íÎó£¡"), _T("³õÊ¼Ö®Òô"), MB_OK | MB_ICONERROR);
+			SendMessage(GetHWnd(), WM_CLOSE, NULL, NULL);
 			break;
 		}
 		current_scene->on_enter(is_debug);

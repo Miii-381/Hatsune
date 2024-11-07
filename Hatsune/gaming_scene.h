@@ -867,7 +867,7 @@ public:
 			TCHAR path_error_msg[1024] = { };
 			_stprintf_s(path_error_msg, sizeof(path_error_msg),_T("谱面文件获取错误，请检查后重新启动程序\n谱面文件位于：.\\resources\\beatmaps\\song_%d\\%s.txt"), origin_info.ID, origin_info.Level[current_level].c_str());
 			perror("fopen error!");
-			MessageBox(GetHWnd(), path_error_msg, _T("ERROR!"), MB_OK);
+			MessageBox(GetHWnd(), path_error_msg, _T("初始之音"), MB_OK | MB_ICONERROR);
 			SendMessage(GetHWnd(), WM_CLOSE, NULL, NULL);
 		}
 		memset(path_template, '\0', sizeof(path_template));
@@ -894,7 +894,7 @@ public:
 			}
 			else
 			{
-				MessageBox(GetHWnd(), _T("音符加载错误，请检查后重新运行游戏（TxT）"), _T("ERROR!"), MB_OK);
+				MessageBox(GetHWnd(), _T("音符加载错误，请检查后重新运行游戏（TxT）"), _T("初始之音"), MB_OK | MB_ICONERROR);
 				SendMessage(GetHWnd(), WM_CLOSE, NULL, NULL);
 			}
 
@@ -931,7 +931,7 @@ public:
 			return Note::Position::Key_K;
 		else
 		{
-			MessageBox(GetHWnd(), _T("音符位置书写错误，请检查后重新运行游戏（TxT）"), _T("ERROR!"), MB_OK);
+			MessageBox(GetHWnd(), _T("音符位置书写错误，请检查后重新运行游戏（TxT）"), _T("初始之音"), MB_OK | MB_ICONERROR);
 			SendMessage(GetHWnd(), WM_CLOSE, NULL, NULL);
 			return Note::Position::Invalid;
 		}

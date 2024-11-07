@@ -53,7 +53,7 @@ public:
 			if (file.is_open() == false)
 			{
 				perror("fopen error!");
-				MessageBox(GetHWnd(), _T("歌曲文件获取错误，请检查后重新启动程序\n歌曲数文件位于：.\\resources\\beatmaps\\songs_list.txt"), _T("ERROR!"), MB_OK);
+				MessageBox(GetHWnd(), _T("歌曲文件获取错误，请检查后重新启动程序\n歌曲数文件位于：.\\resources\\beatmaps\\songs_list.txt"), _T("ERROR!"), MB_OK | MB_ICONERROR);
 				SendMessage(GetHWnd(), WM_CLOSE, NULL, NULL);
 			}
 
