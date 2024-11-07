@@ -69,7 +69,7 @@ public:
 
 	void on_draw(bool is_debug)
 	{
-		if (pos_hold_end.y <= WINDOW_HEIGHT&& (!start_judged || !end_judged) && (judge_level != Note::JudgeLevel::Miss))
+		if (pos_hold_start.y >= -100 &&(!start_judged || !end_judged) && (judge_level != Note::JudgeLevel::Miss))
 		{
 			solidrectangle(pos_hold_end.x + 2, pos_hold_end.y, pos_hold_start.x + img_hold.getwidth() - 4, pos_hold_start.y);
 
@@ -77,8 +77,11 @@ public:
 			putimage_alpha(pos_hold_end.x, pos_hold_end.y, &img_hold);
 		}
 
-		line(pos_hold_start.x, (pos_hold_start.y + img_hold.getheight() / 2), (pos_hold_start.x + 75), (pos_hold_start.y + img_hold.getheight() / 2));
-		line(pos_hold_end.x, (pos_hold_end.y + img_hold.getheight() / 2), (pos_hold_end.x + 75), (pos_hold_end.y + img_hold.getheight() / 2));
+		if (is_debug)
+		{
+			line(pos_hold_start.x, (pos_hold_start.y + img_hold.getheight() / 2), (pos_hold_start.x + 75), (pos_hold_start.y + img_hold.getheight() / 2));
+			line(pos_hold_end.x, (pos_hold_end.y + img_hold.getheight() / 2), (pos_hold_end.x + 75), (pos_hold_end.y + img_hold.getheight() / 2));
+		}
 	}
 
 	void judge(int game_time, bool is_debug, USHORT message) override
@@ -87,7 +90,7 @@ public:
 		{
 			if (pos_hold_start.y > 400 && !start_judged && message == WM_KEYDOWN)
 			{
-				int delta_time = game_time - start_time + offset;
+				int delta_time = game_time - start_time;
 
 				if (delta_time >= -50 && delta_time <= 50)
 				{
@@ -119,7 +122,7 @@ public:
 
 			if (start_judged && !end_judged && message == WM_KEYUP)
 			{
-				int delta_time = game_time - end_time + offset;
+				int delta_time = game_time - end_time;
 
 				if (delta_time >= -50 && delta_time <= 50)
 				{

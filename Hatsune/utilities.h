@@ -136,5 +136,14 @@ inline void resume_song(int current_song)
 	mciSendString(path_command, NULL, 0, NULL);
 }
 
+// 音乐时间显示转换
+void msToTime(long long milliseconds, int& s, int& m, int& h)
+{
+	int seconds = milliseconds / 1000;
+	h = seconds / 3600;
+	m = (seconds % 3600) / 60;
+	s = seconds % 60;
+}
+
 #endif // !_UTILITIES_H_
 

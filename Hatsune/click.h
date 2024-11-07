@@ -53,7 +53,7 @@ public:
 
 	void on_draw(bool is_debug)
 	{
-		if(pos_click.y <= WINDOW_HEIGHT && is_judged == false)
+		if(pos_click.y >= -100 && is_judged == false)
 			putimage_alpha(pos_click.x, pos_click.y, &img_click);
 
 		line(pos_click.x, (pos_click.y + img_click.getheight() / 2), (pos_click.x + 75), (pos_click.y + img_click.getheight() / 2));
@@ -65,7 +65,7 @@ public:
 		{
 			if (pos_click.y > 400)
 			{
-				int delta_time = game_time - note_time + offset;
+				int delta_time = game_time - note_time;
 				if (delta_time >= -50 && delta_time <= 50)
 				{
 					if (is_debug) printf("delta_time = %d ", delta_time);

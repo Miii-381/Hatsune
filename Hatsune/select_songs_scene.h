@@ -367,15 +367,6 @@ public:
 		sprintf_s(current_song_display, "当前歌曲：%d / %d", info.ID, SONGS_NUM);
 	}
 
-	// 音乐时间显示转换
-	void msToTime(long long milliseconds, int& s, int& m, int& h)
-	{
-		int seconds = milliseconds / 1000;
-		h = seconds / 3600;
-		m = (seconds % 3600) / 60;
-		s = seconds % 60;
-	}
-
 	void Song_length_get()
 	{
 		TCHAR temp[64];

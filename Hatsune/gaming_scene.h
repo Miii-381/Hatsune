@@ -81,7 +81,6 @@ public:
 
 	void on_enter(bool is_debug)
 	{
-		game_time = 0;
 		setfillcolor(0x7bbff8);
 		srand(static_cast<unsigned int>(time(0)));		// static_cast：c++中的强制类型转换
 		enter_time = std::chrono::system_clock::now();
@@ -124,6 +123,23 @@ public:
 
 		play_pos_get.clear();
 		play_pos_get = _T("status song_") + std::to_string(origin_info.ID) + _T(" position");
+
+		int s, m, h;
+		msToTime(origin_info.song_length, s, m, h);
+		if (h == 0)
+		{
+			if (m < 10)
+				_stprintf_s(song_length, "%d:%02d", m, s);
+			else
+				_stprintf_s(song_length, "%02d:%02d", m, s);
+		}
+		else
+		{
+			if (m < 10)
+				_stprintf_s(song_length, "%d:%d:%02d", h, m, s);
+			else
+				_stprintf_s(song_length, "%d:%02d:%02d", h, m, s);
+		}
 	}
 
 	void on_update(int delta, bool is_debug)
@@ -151,72 +167,9 @@ public:
 			// 开始后的游戏逻辑
 			else
 			{
-				// 音乐播控
-				if (music_play == false)
-				{
-					play_song_no_repeat(origin_info.ID);
-					music_play = true;
-				}
-
-				if (!game_end && transision_complete)
-				{
-					mciSendString(play_pos_get.c_str(), play_pos, sizeof(play_pos), NULL);
-					game_time = strtol(play_pos, NULL, 10) + offset; // 字符串转换为长整型
-					memset(play_pos, 0, sizeof(play_pos));
-				}
-					//game_time = delta + game_time;		// 游戏时间累加，用于判定note和游戏是否结束
-				// 据新消息：使用帧间定时器会发生错误偏移量的累加，导致游戏速度变慢
-				// 弃用帧间定时器计算游戏时长，转而使用音乐播放时间戳进行游戏时长的确定，问题解决~
-				if (is_debug) printf_s("delta = %d", delta);
-
 				GetBeatmap();
 
-				if (!line_D_display.empty() && line_D_display.front()->get_judged())
-				{
-					if (line_D_display.front()->judge_level == Note::JudgeLevel::Miss)
-					{
-						judge_display = Note::JudgeLevel::Miss;
-						if(line_D_display.front()->note_type == Note::NoteType::Hold)
-							line_D_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-						line_D_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-					}
-					line_D_display.pop_front();
-				}
-				if (!line_F_display.empty() && line_F_display.front()->get_judged())
-				{
-					if (line_F_display.front()->judge_level == Note::JudgeLevel::Miss)
-					{
-						judge_display = Note::JudgeLevel::Miss;
-						if (line_F_display.front()->note_type == Note::NoteType::Hold)
-							line_F_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-						line_F_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-					}
-					line_F_display.pop_front();
-				}
-				if (!line_J_display.empty() && line_J_display.front()->get_judged())
-				{
-					if (line_J_display.front()->judge_level == Note::JudgeLevel::Miss)
-					{
-						judge_display = Note::JudgeLevel::Miss;
-						if (line_J_display.front()->note_type == Note::NoteType::Hold)
-							line_J_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-						line_J_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-					}
-					line_J_display.pop_front();
-				}
-				if (!line_K_display.empty() && line_K_display.front()->get_judged())
-				{
-					if (line_K_display.front()->judge_level == Note::JudgeLevel::Miss)
-					{
-						judge_display = Note::JudgeLevel::Miss;
-						if (line_K_display.front()->note_type == Note::NoteType::Hold)
-							line_K_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-						line_K_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-					}
-					line_K_display.pop_front();
-				}
-
-				AccuracyCalculate();
+				if (is_debug) printf_s("delta = %d", delta);
 
 				for (auto it = line_D_display.begin(); it != line_D_display.end(); ++it)
 				{
@@ -234,8 +187,82 @@ public:
 				{
 					(*it)->on_update(delta, game_time, is_debug);
 				}
-			}
+				
+				if (game_time <= 0)
+				{
+					game_time += delta;
+				}
 
+				else
+				{
+					// 音乐播控
+					if (music_play == false)
+					{
+						play_song_no_repeat(origin_info.ID);
+						music_play = true;
+					}
+
+					if (!game_end && transision_complete)
+					{
+						mciSendString(play_pos_get.c_str(), play_pos, sizeof(play_pos), NULL);
+						game_time = strtol(play_pos, NULL, 10); // 字符串转换为长整型
+						memset(play_pos, 0, sizeof(play_pos));
+					}
+
+					//game_time = delta + game_time;		// 游戏时间累加，用于判定note和游戏是否结束
+
+					// 据新消息：使用帧间定时器会发生错误偏移量的累加，导致游戏速度变慢
+					// 弃用帧间定时器计算游戏时长，转而使用音乐播放时间戳进行游戏时长的确定，问题解决~
+
+					if (!line_D_display.empty() && line_D_display.front()->get_judged())
+					{
+						if (line_D_display.front()->judge_level == Note::JudgeLevel::Miss)
+						{
+							judge_display = Note::JudgeLevel::Miss;
+							if (line_D_display.front()->note_type == Note::NoteType::Hold)
+								line_D_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+							line_D_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+						}
+						line_D_display.pop_front();
+					}
+					if (!line_F_display.empty() && line_F_display.front()->get_judged())
+					{
+						if (line_F_display.front()->judge_level == Note::JudgeLevel::Miss)
+						{
+							judge_display = Note::JudgeLevel::Miss;
+							if (line_F_display.front()->note_type == Note::NoteType::Hold)
+								line_F_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+							line_F_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+						}
+						line_F_display.pop_front();
+					}
+					if (!line_J_display.empty() && line_J_display.front()->get_judged())
+					{
+						if (line_J_display.front()->judge_level == Note::JudgeLevel::Miss)
+						{
+							judge_display = Note::JudgeLevel::Miss;
+							if (line_J_display.front()->note_type == Note::NoteType::Hold)
+								line_J_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+							line_J_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+						}
+						line_J_display.pop_front();
+					}
+					if (!line_K_display.empty() && line_K_display.front()->get_judged())
+					{
+						if (line_K_display.front()->judge_level == Note::JudgeLevel::Miss)
+						{
+							judge_display = Note::JudgeLevel::Miss;
+							if (line_K_display.front()->note_type == Note::NoteType::Hold)
+								line_K_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+							line_K_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+						}
+						line_K_display.pop_front();
+					}
+
+					AccuracyCalculate();
+				}
+			}
+			
 			// 歌曲结束判定
 			if (game_time >= origin_info.song_length && game_start == true && game_end == false)
 			{
@@ -401,8 +428,36 @@ public:
 			point_display = std::to_string(actual_point);
 			outtextxy_shaded(getwidth() - textwidth(point_display.c_str()) - 20, 0, point_display.c_str());
 
+			font_miku.lfHeight = 50;
+			settextstyle(&font_miku);
+
+			TCHAR play_pos[128] = { };
+			int s, m, h;
+			if(game_time <= 0)
+				msToTime(0, s, m, h);
+			else
+				msToTime(game_time, s, m, h);
+
+			if (h == 0)
+			{
+				if (m < 10)
+					_stprintf_s(play_pos, "%d:%02d", m, s);
+				else
+					_stprintf_s(play_pos, "%02d:%02d", m, s);
+			}
+			else
+			{
+				if (m < 10)
+					_stprintf_s(play_pos, "%d:%d:%02d", h, m, s);
+				else
+					_stprintf_s(play_pos, "%d:%02d:%02d", h, m, s);
+			}
+			_stprintf_s(play_pos, "%s / %s", play_pos, song_length);
+			outtextxy_shaded(getwidth() - textwidth(play_pos) - 20, textheight(point_display.c_str()) + 30, play_pos);
+
 			font_miku.lfHeight = 40;
 			settextstyle(&font_miku);
+
 			switch (judge_display)
 			{
 			case Note::JudgeLevel::Perfect:
@@ -425,6 +480,7 @@ public:
 			};
 			
 			printf("%d", judge_display);
+			
 			TCHAR temp[256] = { };
 			_stprintf_s(temp, _T("Accuracy: %.2lf%%"), Accuracy * 100);
 			outtextxy_shaded(820, 300, temp);
@@ -807,7 +863,7 @@ public:
 		note_storage.clear();
 		note_count = 0;
 		judge_display = Note::JudgeLevel::Invalid;
-		game_time = 0;
+		game_time = -1000;
 		game_start = false;
 		game_end = false;
 		game_pause = false;
@@ -940,27 +996,55 @@ public:
 	// 实时加载谱面数据
 	void GetBeatmap()
 	{
-		while ((note_storage.size() > note_count) && (note_storage[note_count][0]->GetNoteTime() - game_time <= 3000))
+		if (game_time <= 0)
 		{
-			for (auto it = note_storage[note_count].begin(); it != note_storage[note_count].end(); ++it)
+			while ((note_storage.size() > note_count) && (note_storage[note_count][0]->GetNoteTime() - 0 <= 3000))
 			{
-				switch ((*it)->getPosition())
+				for (auto it = note_storage[note_count].begin(); it != note_storage[note_count].end(); ++it)
 				{
-				case Note::Position::Key_D:
-					line_D_display.push_back(*it);
-					break;
-				case Note::Position::Key_F:
-					line_F_display.push_back(*it);
-					break;
-				case Note::Position::Key_J:
-					line_J_display.push_back(*it);
-					break;
-				case Note::Position::Key_K:
-					line_K_display.push_back(*it);
-					break;
+					switch ((*it)->getPosition())
+					{
+					case Note::Position::Key_D:
+						line_D_display.push_back(*it);
+						break;
+					case Note::Position::Key_F:
+						line_F_display.push_back(*it);
+						break;
+					case Note::Position::Key_J:
+						line_J_display.push_back(*it);
+						break;
+					case Note::Position::Key_K:
+						line_K_display.push_back(*it);
+						break;
+					}
 				}
+				note_count += 1;
 			}
-			note_count += 1;
+		}
+		else
+		{
+			while ((note_storage.size() > note_count) && (note_storage[note_count][0]->GetNoteTime() - game_time <= 3000))
+			{
+				for (auto it = note_storage[note_count].begin(); it != note_storage[note_count].end(); ++it)
+				{
+					switch ((*it)->getPosition())
+					{
+					case Note::Position::Key_D:
+						line_D_display.push_back(*it);
+						break;
+					case Note::Position::Key_F:
+						line_F_display.push_back(*it);
+						break;
+					case Note::Position::Key_J:
+						line_J_display.push_back(*it);
+						break;
+					case Note::Position::Key_K:
+						line_K_display.push_back(*it);
+						break;
+					}
+				}
+				note_count += 1;
+			}
 		}
 	}
 
@@ -1024,7 +1108,8 @@ private: // note
 	Note::JudgeLevel judge_display = Note::JudgeLevel::Invalid;	// note判定结果显示
 
 	std::string play_pos_get;							// 用于获取当前播放位置
-	char play_pos[128];									// 存放当前播放位置（mci返回的是字符串，所以只能存放在字符串中）
+	TCHAR play_pos[128];								// 存放当前播放位置（mci返回的是字符串，所以只能存放在字符串中）
+	TCHAR song_length[64];								// 存放经转换后的歌曲长度字符串
 
 	// 游戏数据记录
 	int actual_point = 0;			// 实际游玩分数
@@ -1050,9 +1135,8 @@ private: // 场景
 	std::chrono::system_clock::time_point enter_time;		// 进入场景的时间
 	std::chrono::system_clock::time_point current_time;		// 当前时间
 	Timer timer_blur;										// 淡入淡出定时器
-	DWORD game_time = 0;									// 游戏计时器，使用它与谱面内的音符时间戳进行音符判定
+	int game_time = -1000;									// 游戏计时器，使用它与谱面内的音符时间戳进行音符判定(给个负的初值，让刚开始时的音符不会突兀出现)
 	int game_start_wait_counter = 100;						// 过场动画结束后的停顿时间（越大越久，看debug的值确定循环时间再来计算等待时间）
-
 	BYTE trans_strength_transition = 255;					// 过渡画面整体透明度
 	BYTE trans_strength_bg = 255;							// 背景透明度
 	bool game_start = false;								// 是否可以开始游戏
