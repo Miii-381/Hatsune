@@ -87,11 +87,12 @@ public:
 		{
 			if (msg.vkcode == VK_ESCAPE)
 			{
-				MessageBox(GetHWnd(), _T("确定要退出吗？"), _T("呜呜呜~"), MB_OKCANCEL);
-				if (IDOK)
+				mciSendString(_T("pause menu_scene_BGM"), NULL, 0, NULL);
+				int status = MessageBox(GetHWnd(), _T("确定要退出吗？"), _T("呜呜呜~"), MB_OKCANCEL);
+				if (status == IDOK)
 					SendMessage(GetHWnd(), WM_CLOSE, NULL, NULL);
-				if (IDCANCEL)
-					DestroyWindow(GetHWnd());
+				else
+                    mciSendString(_T("resume menu_scene_BGM"), NULL, 0, NULL);
 			}
 		}
 		

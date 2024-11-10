@@ -576,6 +576,11 @@ public:
 						pause_song(origin_info.ID);
 					}
 				}
+				if (msg.vkcode == VK_RETURN)
+				{
+					if (game_end)
+						scene_manager.switch_to_last_scene(is_debug);
+				}
 			}
 			else
 			{

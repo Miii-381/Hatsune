@@ -283,10 +283,10 @@ int main()
 	switch (MessageBox(GetHWnd(), _T("是否开启debug模式？"), _T("初始之音"), MB_YESNO))
 	{
 		case IDYES:
-			initgraph(WINDOW_WIDTH, WINDOW_HEIGHT, EX_SHOWCONSOLE);	// 创建绘图窗口，捕捉绘图窗口句柄
+			initgraph(WINDOW_WIDTH, WINDOW_HEIGHT, EX_SHOWCONSOLE);	// 创建带控制台的绘图窗口，捕捉绘图窗口句柄
 			SetWindowText(GetHWnd(), _T("初始之音"));
 			is_debug = true;
-			switch (MessageBox(GetHWnd(), _T("是否加载全部歌曲？"), _T("初始之音"), MB_YESNO))
+			switch (MessageBox(GetHWnd(), _T("是否加载全部歌曲？"), _T("初始之音"), MB_YESNO))  // 返回值为按钮的值，1为YES，2为NO
 			{
 			case IDYES:
 				load_all_songs = true;
@@ -297,7 +297,7 @@ int main()
 			};
 			break;
 		case IDNO:
-			initgraph(WINDOW_WIDTH, WINDOW_HEIGHT);					// 创建绘图窗口，捕捉绘图窗口句柄
+			initgraph(WINDOW_WIDTH, WINDOW_HEIGHT);					// 创建不带控制台的绘图窗口，捕捉绘图窗口句柄
 			SetWindowText(GetHWnd(), _T("初始之音"));
 			break;
 	};
