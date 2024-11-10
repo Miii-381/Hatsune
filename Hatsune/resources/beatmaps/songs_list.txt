@@ -29,7 +29,7 @@
 029 - なかよしセンセーション (Game Ver.) - なかよし部 - 0 - Hard - NakayoshiBu~
 030 - 青春スピナー (Game Ver.) - なかよし部 - 0 - Easy - Normal - Hard
 031 - うまぴょい伝説 (Game Ver.) - うまぴょい - 0 - 1200m - 1600m - 2400m - 3200m
-032 - Only My Railgun (TV Size) - fripSide - 0 - Normal - Hard - Expert
+032 - Only My Railgun (TV Size) - fripSide - 0 - Normal - Hard - Only my railgun!
 033 - AIAIAI - Kizuna Ai / 中田ヤスタカ - 0 - Easy - Normal - Hard - Expert
 034 - 君色に染まる (Cut Ver.) - りぃふ (Cover) - 0 - Easy - Normal - Hard - Expert 
 035 - From Zero feat. Rika - Neko Hacker / 利香 - 0 - Easy - Normal - Hard - Expert
