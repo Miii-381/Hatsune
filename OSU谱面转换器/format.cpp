@@ -92,13 +92,14 @@ int main()
 			}
 
 			// 开始生成自己程序中的对应参数
-			if ((temp_num[0] == 64 || temp_num[0] == 0)&& (temp_num[1] == 192 || temp_num[1] == 384))				// 音符位置(DFJK分别对应1234)
+			// if ((temp_num[0] == 64 || temp_num[0] == 0)&& (temp_num[1] == 192 || temp_num[1] == 384))	 留个备份
+			if ((temp_num[0] == 64 || temp_num[0] == 0))				// 音符位置(DFJK分别对应1234)
 				pos = 1;
-			else if ((temp_num[0] == 192 || temp_num[0] == 128) && (temp_num[1] == 192 || temp_num[1] == 384))
+			else if ((temp_num[0] == 192 || temp_num[0] == 128))
 				pos = 2;
-			else if ((temp_num[0] >= 256 && temp_num[0] <= 330) && (temp_num[1] == 192 || temp_num[1] == 384))
+			else if ((temp_num[0] >= 256 && temp_num[0] <= 330))
 				pos = 3;
-			else if ((temp_num[0] >= 384 && temp_num[0] <= 450) && (temp_num[1] == 192 || temp_num[1] == 384))
+			else if ((temp_num[0] >= 384 && temp_num[0] <= 450))
 				pos = 4;
 
 			start_time = temp_num[2];	// 音符开始时间
