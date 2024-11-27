@@ -32,9 +32,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="garbage.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="opening_scene.h">
       <Filter>头文件\Scenes</Filter>
     </ClInclude>

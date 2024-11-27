@@ -26,7 +26,7 @@ inline void putimage_alpha(int x, int y, IMAGE* img, BYTE strength)
 	AlphaBlend(GetImageHDC(NULL), x, y, w, h,
 		GetImageHDC(img), 0, 0, w, h, { AC_SRC_OVER,0,strength,AC_SRC_ALPHA });
 }
-
+// 带阴影的图片绘制，兼容上面俩，懒得重构了
 inline void putimage_alpha_shadow(int x, int y, IMAGE* img,IMAGE* img_shadow, BYTE strength)
 {
 	int w = img->getwidth();

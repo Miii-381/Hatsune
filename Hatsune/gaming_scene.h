@@ -192,74 +192,71 @@ public:
 				{
 					game_time += delta;
 				}
-
 				else
 				{
 					// 音乐播控
 					if (music_play == false)
 					{
-						play_song_no_repeat(origin_info.ID);  // 应该是mci本身的问题或者是音符逻辑堆太多了，会导致游戏刚开始的时候，从过渡态转化到实际游戏时的那一瞬间出现卡顿
+						play_song_no_repeat(origin_info.ID);  
 						music_play = true;
 					}
 
 					if (!game_end && transision_complete)
 					{
+						memset(play_pos, 0, sizeof(play_pos));
 						mciSendString(play_pos_get.c_str(), play_pos, sizeof(play_pos), NULL);
 						game_time = strtol(play_pos, NULL, 10); // 字符串转换为长整型
-						memset(play_pos, 0, sizeof(play_pos));
 					}
-
 					//game_time = delta + game_time;		// 游戏时间累加，用于判定note和游戏是否结束
-
 					// 据新消息：使用帧间定时器会发生错误偏移量的累加，导致游戏速度变慢
 					// 弃用帧间定时器计算游戏时长，转而使用音乐播放时间戳进行游戏时长的确定，问题解决~
-
-					if (!line_D_display.empty() && line_D_display.front()->get_judged())
-					{
-						if (line_D_display.front()->judge_level == Note::JudgeLevel::Miss)
-						{
-							judge_display = Note::JudgeLevel::Miss;
-							if (line_D_display.front()->note_type == Note::NoteType::Hold)
-								line_D_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-							line_D_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-						}
-						line_D_display.pop_front();
-					}
-					if (!line_F_display.empty() && line_F_display.front()->get_judged())
-					{
-						if (line_F_display.front()->judge_level == Note::JudgeLevel::Miss)
-						{
-							judge_display = Note::JudgeLevel::Miss;
-							if (line_F_display.front()->note_type == Note::NoteType::Hold)
-								line_F_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-							line_F_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-						}
-						line_F_display.pop_front();
-					}
-					if (!line_J_display.empty() && line_J_display.front()->get_judged())
-					{
-						if (line_J_display.front()->judge_level == Note::JudgeLevel::Miss)
-						{
-							judge_display = Note::JudgeLevel::Miss;
-							if (line_J_display.front()->note_type == Note::NoteType::Hold)
-								line_J_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-							line_J_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-						}
-						line_J_display.pop_front();
-					}
-					if (!line_K_display.empty() && line_K_display.front()->get_judged())
-					{
-						if (line_K_display.front()->judge_level == Note::JudgeLevel::Miss)
-						{
-							judge_display = Note::JudgeLevel::Miss;
-							if (line_K_display.front()->note_type == Note::NoteType::Hold)
-								line_K_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-							line_K_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
-						}
-						line_K_display.pop_front();
-					}
-
 					AccuracyCalculate();
+				}
+				// 应该是mci本身的问题或者是音符逻辑堆太多了，会导致游戏刚开始的时候，从过渡态转化到实际游戏时的那一瞬间出现卡顿
+				// 2024.11.23 把判定逻辑移到外面了,问题没解决...
+				if (!line_D_display.empty() && line_D_display.front()->get_judged())
+				{
+					if (line_D_display.front()->judge_level == Note::JudgeLevel::Miss)
+					{
+						judge_display = Note::JudgeLevel::Miss;
+						if (line_D_display.front()->note_type == Note::NoteType::Hold)
+							line_D_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+						line_D_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+					}
+					line_D_display.pop_front();
+				}
+				if (!line_F_display.empty() && line_F_display.front()->get_judged())
+				{
+					if (line_F_display.front()->judge_level == Note::JudgeLevel::Miss)
+					{
+						judge_display = Note::JudgeLevel::Miss;
+						if (line_F_display.front()->note_type == Note::NoteType::Hold)
+							line_F_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+						line_F_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+					}
+					line_F_display.pop_front();
+				}
+				if (!line_J_display.empty() && line_J_display.front()->get_judged())
+				{
+					if (line_J_display.front()->judge_level == Note::JudgeLevel::Miss)
+					{
+						judge_display = Note::JudgeLevel::Miss;
+						if (line_J_display.front()->note_type == Note::NoteType::Hold)
+							line_J_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+						line_J_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+					}
+					line_J_display.pop_front();
+				}
+				if (!line_K_display.empty() && line_K_display.front()->get_judged())
+				{
+					if (line_K_display.front()->judge_level == Note::JudgeLevel::Miss)
+					{
+						judge_display = Note::JudgeLevel::Miss;
+						if (line_K_display.front()->note_type == Note::NoteType::Hold)
+							line_K_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+						line_K_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
+					}
+					line_K_display.pop_front();
 				}
 			}
 			

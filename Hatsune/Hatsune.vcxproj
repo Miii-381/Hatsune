@@ -135,7 +135,6 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="click.h" />
     <ClInclude Include="gaming_scene.h" />
-    <ClInclude Include="garbage.h" />
     <ClInclude Include="hold.h" />
     <ClInclude Include="menu_scene.h" />
     <ClInclude Include="note.h" />
