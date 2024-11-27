@@ -1,63 +1,64 @@
-001 - ラビットホール - DECO*27 / 初音ミク - 0 - Easy - Normal - Advanced - Hard - Hyper - Expert - Insane
-002 - ヴァンパイア - DECO*27 /  初音ミク - 0 - Beginner - Easy - Normal - Advanced - Hard - Expert
-003 - 二息歩行 (Reloaded) - DECO*27 /  初音ミク - 0 - Easy - Normal - Advanced - Hard - Expert
-004 - 少女レイ - みきとP / 初音ミク - 0 - Normal - Hard
-005 - 初嵐 - DECO*27 /  初音ミク - 0 - Easy - Normal - Hard - Expert
-006 - ゴーストルール - DECO*27 /  初音ミク - 0 - Easy - Normal - Hard - Expert
-007 - 愛言葉 (Cut Ver.) - DECO*27 /  初音ミク - 0 - Easy - Normal - Hard
-008 - トリノコシティ - 40mP / 初音ミク - 0 - Normal - Hard
-009 - 好き!雪!本気マジック - Mitchie M / 初音ミク - 0 - Normal - Hard - Expert
-010 - Ievan Polkka (Cut Ver.) - Otomania / 初音ミク - 0 - Easy - Normal - Hard - Expert - Insane - Enjoy~~~
-011 - ロミオとシンデレラ - doriko / 初音ミク - 0 - Easy - Normal - Hard - Expert - Insane
-012 - ワールドイズマイン - ryo (supercell) / 初音ミク - 0 - Easy - Normal - Hard - World is Mine
-013 - 初音ミクの激唱 (Live Ver.) - cosMo@暴走P / 初音ミク - 0 - Easy - Normal - Hard - Expert - Insane
-014 - 初音ミクの消失 - cosMo@暴走P / 初音ミク - 0 - Easy - Normal - Hard - Expert - Insane - Infinity
-015 - 裏表ラバーズ (Cut Ver.) - wowaka / 初音ミク - 0 - Easy - Normal - Hard - Expert
-016 - ヒバナ (Cut Ver) - DECO*27 / 初音ミク - 0 - Easy - Normal - Hard - Expert
-017 - なにが悪い (TV Size) - 結束バンド - 0 - Easy - Normal - Oshiete~
-018 - 光の中へ - 結束バンド - 0 - Normal - Hard - Expert
-019 - カラカラ (TV Size) - 結束バンド - 0 - Easy - Normal - Hard - Expert
-020 - 雑踏、僕らの街 (TV Size) - トゲナシトゲアリ - 0 - Easy - Normal - Hard - Raise your middle finger!
-021 - 空の箱 (TV Size) - トゲナシトゲアリ - 0 - Easy - Normal - Hard - Expert
-022 - 回層浮（Kaisou） - MyGO!!!!! - 0 - Normal - Hard - Expert
-023 - 迷星叫（Mayoiuta） - MyGO!!!!! - 0 - 打不了，听个响~
-024 - 詩超絆（Utakotoba） - MyGO!!!!! - 0 - Easy - Normal - Hard - Expert - Insane
-025 - 春日影 - CRYCHIC - 0 - Normal - Hard - Expert
-026 - 春日影 (MyGO!!!!! ver.) - MyGO!!!!! - 0 - Normal - Hard
-027 - Mas?querade Rhapsody Reuest - Ave Mujica - 0 - Easy - Hard - Expert - Ave Mujica
-028 - Eutopia (TV Size) - 法元明菜 - 0 - Easy - Normal - Hard - Expert
-029 - なかよしセンセーション (Game Ver.) - なかよし部 - 0 - Hard - NakayoshiBu~
-030 - 青春スピナー (Game Ver.) - なかよし部 - 0 - Easy - Normal - Hard
-031 - うまぴょい伝説 (Game Ver.) - うまぴょい - 0 - 1200m - 1600m - 2400m - 3200m
-032 - Only My Railgun (TV Size) - fripSide - 0 - Normal - Hard - Only my railgun!
-033 - AIAIAI - Kizuna Ai / 中田ヤスタカ - 0 - Easy - Normal - Hard - Expert
-034 - 君色に染まる (Cut Ver.) - りぃふ (Cover) - 0 - Easy - Normal - Hard - Expert 
-035 - From Zero feat. Rika - Neko Hacker / 利香 - 0 - Easy - Normal - Hard - Expert
-036 - インドア系ならトラックメイカー - Yunomi / nicamoq - 0 - Easy - Normal - Hard - Harder - Expert - Insane - Trackmaker~
-037 - ノーポイッ！  (TV Size) - Petit Rabbit's - 0 - Easy - Normal - Hard - Expert
-038 - 夏空エール (TV Size) - 桃原 奈月 (CV: 村川 梨衣) - 0 - Easy - Normal - Hard - Expert
-039 - シカ色デイズ (TV Size) - 鹿乃子のこ / 虎視虎子 / 虎視餡子 / 馬車芽めめ - 0 - Easy - Normal - Hard - Expert
-040 - しかのこのこのここしたんたん（1小时循环版） - 鹿乃子のこ - 0 - Easy(MindFxxk) - Normal(MindFxxk) - Hard(MindFxxk) - Expert(MindFxxk)
-041 - アイドル (TV Size) - YOASOBI - 0 - Easy - Normal - Hard - Insane - Ai no Uso
-042 - Bling-Bang-Bang-Born (TV Size) - Creepy Nuts - 0 - Easy - Normal - Hard - Insane - Bling-Bang-Bang-Born
-043 - 勇者 (TV Size) - YOASOBI - 0 - Easy - Normal - Hard - Expert - Insane
-044 - Anytime Anywhere (TV Size) - milet - 0 - Easy - Normal - Hard - Anytime Anywhere
-045 - 踊 - Ado - 0 - Easy - Normal - Hard - Expert - Insane
-046 - crossing field (TV Size) - LiSA - 0 - Easy - Normal - Hard - Expert
-047 - This game (TV Size) - 鈴木このみ - 0 - Easy - Normal - Hard - Expert
-048 -  紅蓮華 (TV Size) - LiSA - 0 - Easy - Normal - Hard - Expert
-049 - 「僕は...」 (TV Size) - あたらよ - 0 - Easy - Normal - Hard - Expert
-050 -  燦々デイズ (TV Size) - スピラ · スピカ - 0 - Easy - Normal - Hard - Expert
-051 - キミのとなりで (TV Size) - 鬼頭明里 - 0 - Easy - Normal - Hard - Atachi to Shimamura
-052 - 愛唄 (TV Size) - 石見舞菜香 - 0 - Easy - Normal - Hard - My Angel Shiina Mahiru
-053 - はっぴーらいふ (TV Size) - MKLNtic - 0 - Easy - Normal - Hard - Expert
-054 - すきっちゅーの！ - ちゅーたん（CV：早見沙織）/ HoneyWorks - 0 - Easy - Normal - Hard - Chuu!
-055 - 爱のシュプリーム！ (TV Size) - fhána - 0 - Easy - Normal - Hard - Expert
-056 - 花の塔 (TV Size) - 酸欠少女さユり - 0 - Easy - Normal - Hard - Expert
-057 - アイデン貞貞メルトダウン (TV Size) - えなこ / P丸様。 - 0 - Easy - Normal - Hard - Mahiro Chan~
-058 - ひめごと*クライシスターズ (TV Size) - 高野麻里佳 / 石原夏織 / 金元寿子 / 津田美波 - 0 - Easy - Normal - Hard - Expert - Onimai
-059 - 強風オールバック - ゆこぴ / 歌愛ユキ - 0 - Easy - Normal - Hard
-060 - Usagi Flap - Aice room - 0 - Easy - Normal - Hard - Expert - Insane
-061 - 恋ひ恋ふ縁 (Cut Ver.) - KOTOKO / Famishin - 0 - Easy - Normal - Hard - Hyper - Enishi - Yoshino Chan~ - Expert - Insane - Star Burst!!!
-062 - とおりゃんせ~甘美風来 - Angel Note / ゆずひこ - 0 - Hard - Yoshino~
-063 - ハジメテノオト - 初音ミク - 0 - 纯听歌，打不了~
+001 - LOVE 2000 - 遠野ひかる - 0 - Easy - Normal - Hard - LOVE 2000
+002 - ラビットホール - DECO*27 / 初音ミク - 0 - Easy - Normal - Advanced - Hard - Hyper - Expert - Insane
+003 - ヴァンパイア - DECO*27 /  初音ミク - 0 - Beginner - Easy - Normal - Advanced - Hard - Expert
+004 - 二息歩行 (Reloaded) - DECO*27 /  初音ミク - 0 - Easy - Normal - Advanced - Hard - Expert
+005 - 少女レイ - みきとP / 初音ミク - 0 - Normal - Hard
+006 - 初嵐 - DECO*27 /  初音ミク - 0 - Easy - Normal - Hard - Expert
+007 - ゴーストルール - DECO*27 /  初音ミク - 0 - Easy - Normal - Hard - Expert
+008 - 愛言葉 (Cut Ver.) - DECO*27 /  初音ミク - 0 - Easy - Normal - Hard
+009 - トリノコシティ - 40mP / 初音ミク - 0 - Normal - Hard
+010 - 好き!雪!本気マジック - Mitchie M / 初音ミク - 0 - Normal - Hard - Expert
+011 - Ievan Polkka (Cut Ver.) - Otomania / 初音ミク - 0 - Easy - Normal - Hard - Expert - Insane - Enjoy~~~
+012 - ロミオとシンデレラ - doriko / 初音ミク - 0 - Easy - Normal - Hard - Expert - Insane
+013 - ワールドイズマイン - ryo (supercell) / 初音ミク - 0 - Easy - Normal - Hard - World is Mine
+014 - 初音ミクの激唱 (Live Ver.) - cosMo@暴走P / 初音ミク - 0 - Easy - Normal - Hard - Expert - Insane
+015 - 初音ミクの消失 - cosMo@暴走P / 初音ミク - 0 - Easy - Normal - Hard - Expert - Insane - Infinity
+016 - 裏表ラバーズ (Cut Ver.) - wowaka / 初音ミク - 0 - Easy - Normal - Hard - Expert
+017 - ヒバナ (Cut Ver) - DECO*27 / 初音ミク - 0 - Easy - Normal - Hard - Expert
+018 - なにが悪い (TV Size) - 結束バンド - 0 - Easy - Normal - Oshiete~
+019 - 光の中へ - 結束バンド - 0 - Normal - Hard - Expert
+020 - カラカラ (TV Size) - 結束バンド - 0 - Easy - Normal - Hard - Expert
+021 - 雑踏、僕らの街 (TV Size) - トゲナシトゲアリ - 0 - Easy - Normal - Hard - Raise your middle finger!
+022 - 空の箱 (TV Size) - トゲナシトゲアリ - 0 - Easy - Normal - Hard - Expert
+023 - 回層浮（Kaisou） - MyGO!!!!! - 0 - Normal - Hard - Expert
+024 - 迷星叫（Mayoiuta） - MyGO!!!!! - 0 - 打不了，听个响~
+025 - 詩超絆（Utakotoba） - MyGO!!!!! - 0 - Easy - Normal - Hard - Expert - Insane
+026 - 春日影 - CRYCHIC - 0 - Normal - Hard - Expert
+027 - 春日影 (MyGO!!!!! ver.) - MyGO!!!!! - 0 - Normal - Hard
+028 - Mas?querade Rhapsody Reuest - Ave Mujica - 0 - Easy - Hard - Expert - Ave Mujica
+029 - Eutopia (TV Size) - 法元明菜 - 0 - Easy - Normal - Hard - Expert
+030 - なかよしセンセーション (Game Ver.) - なかよし部 - 0 - Hard - NakayoshiBu~
+031 - 青春スピナー (Game Ver.) - なかよし部 - 0 - Easy - Normal - Hard
+032 - うまぴょい伝説 (Game Ver.) - うま娘だち - 0 - 1200m - 1600m - 2400m - 3200m
+033 - Only My Railgun (TV Size) - fripSide - 0 - Normal - Hard - Only my railgun!
+034 - AIAIAI - Kizuna Ai / 中田ヤスタカ - 0 - Easy - Normal - Hard - Expert
+035 - 君色に染まる (Cut Ver.) - りぃふ (Cover) - 0 - Easy - Normal - Hard - Expert 
+036 - From Zero feat. Rika - Neko Hacker / 利香 - 0 - Easy - Normal - Hard - Expert
+037 - インドア系ならトラックメイカー - Yunomi / nicamoq - 0 - Easy - Normal - Hard - Harder - Expert - Insane - Trackmaker~
+038 - ノーポイッ！  (TV Size) - Petit Rabbit's - 0 - Easy - Normal - Hard - Expert
+039 - 夏空エール (TV Size) - 桃原 奈月 (CV: 村川 梨衣) - 0 - Easy - Normal - Hard - Expert
+040 - シカ色デイズ (TV Size) - 鹿乃子のこ / 虎視虎子 / 虎視餡子 / 馬車芽めめ - 0 - Easy - Normal - Hard - Expert
+041 - しかのこのこのここしたんたん（1小时循环版） - 鹿乃子のこ - 0 - Easy(MindFxxk) - Normal(MindFxxk) - Hard(MindFxxk) - Expert(MindFxxk)
+042 - アイドル (TV Size) - YOASOBI - 0 - Easy - Normal - Hard - Insane - Ai no Uso
+043 - Bling-Bang-Bang-Born (TV Size) - Creepy Nuts - 0 - Easy - Normal - Hard - Insane - Bling-Bang-Bang-Born
+044 - 勇者 (TV Size) - YOASOBI - 0 - Easy - Normal - Hard - Expert - Insane
+045 - Anytime Anywhere (TV Size) - milet - 0 - Easy - Normal - Hard - Anytime Anywhere
+046 - 踊 - Ado - 0 - Easy - Normal - Hard - Expert - Insane
+047 - crossing field (TV Size) - LiSA - 0 - Easy - Normal - Hard - Expert
+048 - This game (TV Size) - 鈴木このみ - 0 - Easy - Normal - Hard - Expert
+049 -  紅蓮華 (TV Size) - LiSA - 0 - Easy - Normal - Hard - Expert
+050 - 「僕は...」 (TV Size) - あたらよ - 0 - Easy - Normal - Hard - Expert
+051 -  燦々デイズ (TV Size) - スピラ · スピカ - 0 - Easy - Normal - Hard - Expert
+052 - キミのとなりで (TV Size) - 鬼頭明里 - 0 - Easy - Normal - Hard - Atachi to Shimamura
+053 - 愛唄 (TV Size) - 石見舞菜香 - 0 - Easy - Normal - Hard - My Angel Shiina Mahiru
+054 - はっぴーらいふ (TV Size) - MKLNtic - 0 - Easy - Normal - Hard - Expert
+055 - すきっちゅーの！ - ちゅーたん（CV：早見沙織）/ HoneyWorks - 0 - Easy - Normal - Hard - Chuu!
+056 - 爱のシュプリーム！ (TV Size) - fhána - 0 - Easy - Normal - Hard - Expert
+057 - 花の塔 (TV Size) - 酸欠少女さユり - 0 - Easy - Normal - Hard - Expert
+058 - アイデン貞貞メルトダウン (TV Size) - えなこ / P丸様。 - 0 - Easy - Normal - Hard - Mahiro Chan~
+059 - ひめごと*クライシスターズ (TV Size) - 高野麻里佳 / 石原夏織 / 金元寿子 / 津田美波 - 0 - Easy - Normal - Hard - Expert - Onimai
+060 - 強風オールバック - ゆこぴ / 歌愛ユキ - 0 - Easy - Normal - Hard
+061 - Usagi Flap - Aice room - 0 - Easy - Normal - Hard - Expert - Insane
+062 - 恋ひ恋ふ縁 (Cut Ver.) - KOTOKO / Famishin - 0 - Easy - Normal - Hard - Hyper - Enishi - Yoshino Chan~ - Expert - Insane - Star Burst!!!
+063 - とおりゃんせ~甘美風来 - Angel Note / ゆずひこ - 0 - Hard - Yoshino~
+064 - ハジメテノオト - 初音ミク - 0 - 纯听歌，打不了~
