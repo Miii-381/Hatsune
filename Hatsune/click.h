@@ -41,7 +41,7 @@ public:
 
 	void on_update(int delta, int game_time, bool is_debug)
 	{
-		pos_click.y = 630 + (double)(game_time - note_time + offset) * (double)(drop_speed / 50) - img_click.getheight() / 2;
+		pos_click.y = 630 + (double)(game_time - note_time + offset) * ((double)drop_speed / 50) - img_click.getheight() / 2;
 
 		if (pos_click.y > WINDOW_HEIGHT)
 		{

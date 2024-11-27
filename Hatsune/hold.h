@@ -43,8 +43,8 @@ public:
 	{
 		if (!start_judged || !end_judged)
 		{
-			pos_hold_start.y = 630 + (double)(game_time - start_time + offset) * (double)(drop_speed / 50) - img_hold.getheight() / 2;
-			pos_hold_end.y = 630 + (double)(game_time - end_time + offset) * (double)(drop_speed / 50) - img_hold.getheight() / 2;
+			pos_hold_start.y = 630 + (double)(game_time - start_time + offset) * ((double)drop_speed / 50) - img_hold.getheight() / 2;
+			pos_hold_end.y = 630 + (double)(game_time - end_time + offset) * ((double)drop_speed / 50) - img_hold.getheight() / 2;
 		}
 		
 		if (key_pressed)
