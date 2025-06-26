@@ -16,13 +16,13 @@ public:
 		int ID = 0;										// 序号
 		TCHAR song_name[300] = { };						// 歌曲名
 		TCHAR singer_name[300] = { };					// 歌手名
-		int song_length;								// 歌曲长度
-		int song_chorus_time;							// 副歌时间点
-		std::vector<std::string> Level;					// 难度等级
+		int song_length = 0;							// 歌曲长度
+		int song_chorus_time = 0;						// 副歌时间点
+		std::vector<std::string> Level = { } ;			// 难度等级
 	};
 
-	song_info origin_info;								// 歌曲信息存储
-	song_info info;										// 带介绍的歌曲信息存储
+	song_info origin_info = { };						// 歌曲信息存储
+	song_info info = { };								// 带介绍的歌曲信息存储
 	size_t current_level = 0;							// 当前选择难度
 
 public:

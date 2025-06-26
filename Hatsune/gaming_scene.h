@@ -362,13 +362,13 @@ public:
 
 		// 背景
 		putimage_alpha(0, 0, img_current_song_bg);
-		putimage_alpha(0, 0, &img_masking, trans_strength_bg);
+		putimage_alpha(0, 0, &img_masking, nullptr, trans_strength_bg);
 
 		// 入场动画绘制
 		if (transision_complete == false)
 		{
-			putimage_alpha(0, 0, &img_masking, trans_strength_transition);
-			putimage_alpha_shadow(pos_current_song_cover.x, pos_current_song_cover.y, img_current_song_cover, img_current_song_shadow, trans_strength_transition);
+			putimage_alpha(0, 0, &img_masking, nullptr, trans_strength_transition);
+			putimage_alpha(pos_current_song_cover.x, pos_current_song_cover.y, img_current_song_cover, img_current_song_shadow, trans_strength_transition);
 			if (info_display)
 			{
 				outtextxy_shaded(pos_info_name_text.x, pos_info_name_text.y, origin_info.song_name);
@@ -669,119 +669,27 @@ public:
 			// 调试代码
 			if (is_debug)
 			{
-				if (msg.vkcode == VK_NUMPAD1)
-				{
-					actual_point = 700000;
-					ideal_point = 600000;
-					PerfectCount = 100;
-					GreatCount = 100;
-					GoodCount = 100;
-					BadCount = 100;
-					MissCount = 100;
-					AccuracyCalculate();
-					count_set_manage();
-					game_time = 9000000;
-					game_start = false;
-					game_end = true;
-					stop_song(origin_info.ID);
-					pos_end_button.x = 850; pos_end_button.y = 560;
-
-					region_end_button.top = pos_end_button.y;
-					region_end_button.left = pos_end_button.x;
-					region_end_button.bottom = region_end_button.top + img_end_button_idle.getheight();
-					region_end_button.right = region_end_button.left + img_end_button_idle.getwidth();
-				}
-
-				if (msg.vkcode == VK_NUMPAD2)
-				{
-					actual_point = 500000;
-					ideal_point = 600000;
-					PerfectCount = 100;
-					GreatCount = 100;
-					GoodCount = 100;
-					BadCount = 100;
-					MissCount = 100;
-					AccuracyCalculate();
-					count_set_manage();
-					game_time = 9000000;
-					game_start = false;
-					game_end = true;
-					stop_song(origin_info.ID);
-					pos_end_button.x = 850; pos_end_button.y = 560;
-
-					region_end_button.top = pos_end_button.y;
-					region_end_button.left = pos_end_button.x;
-					region_end_button.bottom = region_end_button.top + img_end_button_idle.getheight();
-					region_end_button.right = region_end_button.left + img_end_button_idle.getwidth();
-				}
-
-				if (msg.vkcode == VK_NUMPAD3)
-				{
-					actual_point = 400000;
-					ideal_point = 600000;
-					PerfectCount = 100;
-					GreatCount = 100;
-					GoodCount = 100;
-					BadCount = 100;
-					MissCount = 100;
-					AccuracyCalculate();
-					count_set_manage();
-					game_time = 9000000;
-					game_start = false;
-					game_end = true;
-					stop_song(origin_info.ID);
-					pos_end_button.x = 850; pos_end_button.y = 560;
-
-					region_end_button.top = pos_end_button.y;
-					region_end_button.left = pos_end_button.x;
-					region_end_button.bottom = region_end_button.top + img_end_button_idle.getheight();
-					region_end_button.right = region_end_button.left + img_end_button_idle.getwidth();
-				}
-
-				if (msg.vkcode == VK_NUMPAD4)
-				{
-					actual_point = 300000;
-					ideal_point = 600000;
-					PerfectCount = 100;
-					GreatCount = 100;
-					GoodCount = 100;
-					BadCount = 100;
-					MissCount = 100;
-					AccuracyCalculate();
-					count_set_manage();
-					game_time = 9000000;
-					game_start = false;
-					game_end = true;
-					stop_song(origin_info.ID);
-					pos_end_button.x = 850; pos_end_button.y = 560;
-
-					region_end_button.top = pos_end_button.y;
-					region_end_button.left = pos_end_button.x;
-					region_end_button.bottom = region_end_button.top + img_end_button_idle.getheight();
-					region_end_button.right = region_end_button.left + img_end_button_idle.getwidth();
-				}
-
-				if (msg.vkcode == VK_NUMPAD5)
-				{
-					actual_point = 100000;
-					ideal_point = 600000;
-					PerfectCount = 100;
-					GreatCount = 100;
-					GoodCount = 100;
-					BadCount = 100;
-					MissCount = 100;
-					AccuracyCalculate();
-					count_set_manage();
-					game_time = 9000000;
-					game_start = false;
-					game_end = true;
-					stop_song(origin_info.ID);
-					pos_end_button.x = 850; pos_end_button.y = 560;
-
-					region_end_button.top = pos_end_button.y;
-					region_end_button.left = pos_end_button.x;
-					region_end_button.bottom = region_end_button.top + img_end_button_idle.getheight();
-					region_end_button.right = region_end_button.left + img_end_button_idle.getwidth();
+				switch (msg.vkcode) {
+					case '6':
+						actual_point = 700000;
+						set_debug_vals();
+						break;
+					case '7':
+						actual_point = 500000;
+                        set_debug_vals();
+						break;
+					case '8':
+						actual_point = 400000;
+						set_debug_vals();
+						break;
+					case '9':
+						actual_point = 300000;
+						set_debug_vals();
+						break;
+					case '0':
+						actual_point = 100000;
+						set_debug_vals();
+						break;
 				}
 			}
 		}
@@ -849,6 +757,27 @@ public:
 				}
 			}
 		}
+	}
+
+	void set_debug_vals() {
+		ideal_point = 600000;
+		PerfectCount = 100;
+		GreatCount = 100;
+		GoodCount = 100;
+		BadCount = 100;
+		MissCount = 100;
+		AccuracyCalculate();
+		count_set_manage();
+		game_time = 9000000;
+		game_start = false;
+		game_end = true;
+		stop_song(origin_info.ID);
+		pos_end_button.x = 850; pos_end_button.y = 560;
+
+		region_end_button.top = pos_end_button.y;
+		region_end_button.left = pos_end_button.x;
+		region_end_button.bottom = region_end_button.top + img_end_button_idle.getheight();
+		region_end_button.right = region_end_button.left + img_end_button_idle.getwidth();
 	}
 
 	void on_exit(bool is_debug)

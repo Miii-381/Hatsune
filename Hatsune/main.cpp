@@ -303,7 +303,7 @@ int main()
 	};
 
 	loadimage(&img_loading, _T("./resources/others/img_loading.png")); 
-	putimage_alpha(0, 0, &img_loading);					// 由于全部文件都堆在主循环前加载，导致加载时间略微抽象，所以加个loading界面
+	putimage_alpha(0, 0, &img_loading);		// 由于全部文件都堆在主循环前加载，导致加载时间略微抽象，所以加个loading界面
 
 	load_songs(load_all_songs);							// 歌曲数及歌曲音频文件加载
 	load_game_resources(load_all_songs);				// 游戏图片加载

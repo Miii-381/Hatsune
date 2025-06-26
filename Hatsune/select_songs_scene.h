@@ -123,7 +123,7 @@ public:
 			region_exit_button.right = region_exit_button.left + img_exit_button_idle.getwidth();
 		}
 
-		play_song(current_song, info.song_chorus_time);
+		play_song(current_song);
 	}
 
 	void on_draw(bool is_debug)
@@ -134,7 +134,7 @@ public:
 			printf("select_songs_scene\n");
 		}
 
-		putimage_alpha(0, 0, &img_background_select_songs_scene, 200);
+		putimage_alpha(0, 0, &img_background_select_songs_scene, nullptr, 200);
 
 		left_arrow_button.on_draw(pos_left_arrow_button.x, pos_left_arrow_button.y, 255, &img_left_arrow_button_idle, &img_left_arrow_button_hovered, &img_left_arrow_button_clicked);
 
@@ -177,13 +177,13 @@ public:
 				{
 					stop_song(current_song);
 					current_song = SONGS_NUM;
-					play_song(current_song, info.song_chorus_time);
+					play_song(current_song);
 				}
 				else
 				{
 					stop_song(current_song);
 					current_song -= 1;
-					play_song(current_song, info.song_chorus_time);
+					play_song(current_song);
 				}
 				is_need_switch_song = true;
 				current_level = 0;
@@ -195,13 +195,13 @@ public:
 				{
 					stop_song(current_song);
 					current_song = 1;
-					play_song(current_song, info.song_chorus_time);
+					play_song(current_song);
 				}
 				else
 				{
 					stop_song(current_song);
 					current_song += 1;
-					play_song(current_song, info.song_chorus_time);
+					play_song(current_song);
 				}
 				is_need_switch_song = true;
 				current_level = 0;
@@ -329,8 +329,8 @@ public:
 	// ¼Ó½éÉÜ
 	void add_intro()
 	{
-		TCHAR temp[512];
-		TCHAR temp_str[512];
+		TCHAR temp[512] = { };
+		TCHAR temp_str[512] = { };
 		strncpy_s(temp, info.song_name, _countof(info.song_name));
 		sprintf_s(info.song_name, "ÇúÃû£º%s", temp);
 		memset(temp, '\0', sizeof(temp));

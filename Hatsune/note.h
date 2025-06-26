@@ -4,19 +4,16 @@
 class Note
 {
 public:
-	enum class Position
-	{
+	enum class Position {
 		Key_D, Key_F, Key_J, Key_K, Invalid
 	};
 
-	enum class JudgeLevel
-	{
+	enum class JudgeLevel {
 		Perfect, Great, Good, Bad, Miss, Invalid
 	};
 
-	enum class NoteType
-	{
-		Click, Hold
+	enum class NoteType {
+		Click, Hold, Invalid
 	};
 
 	struct POINT2
@@ -62,7 +59,7 @@ public:
 
 public:
 	JudgeLevel judge_level = JudgeLevel::Invalid;
-	NoteType note_type;
+	NoteType note_type = NoteType::Invalid;
 };
 
 #endif// !_NOTE_H_

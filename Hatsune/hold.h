@@ -43,8 +43,8 @@ public:
 	{
 		if (!start_judged || !end_judged)
 		{
-			pos_hold_start.y = 630 + (double)(game_time - start_time + offset) * ((double)drop_speed / 50) - img_hold.getheight() / 2;
-			pos_hold_end.y = 630 + (double)(game_time - end_time + offset) * ((double)drop_speed / 50) - img_hold.getheight() / 2;
+			pos_hold_start.y = 630.0 + (double)(game_time - start_time + offset) * ((double)drop_speed / 50.0) - img_hold.getheight() / 2;
+			pos_hold_end.y = 630.0 + (double)(game_time - end_time + offset) * ((double)drop_speed / 50.0) - img_hold.getheight() / 2;
 		}
 		
 		if (key_pressed)
@@ -79,8 +79,8 @@ public:
 
 		if (is_debug)
 		{
-			line(pos_hold_start.x, (pos_hold_start.y + img_hold.getheight() / 2), (pos_hold_start.x + 75), (pos_hold_start.y + img_hold.getheight() / 2));
-			line(pos_hold_end.x, (pos_hold_end.y + img_hold.getheight() / 2), (pos_hold_end.x + 75), (pos_hold_end.y + img_hold.getheight() / 2));
+			line(pos_hold_start.x, (pos_hold_start.y + img_hold.getheight() / 2.0), (pos_hold_start.x + 75.0), (pos_hold_start.y + img_hold.getheight() / 2.0));
+			line(pos_hold_end.x, (pos_hold_end.y + img_hold.getheight() / 2.0), (pos_hold_end.x + 75.0), (pos_hold_end.y + img_hold.getheight() / 2.0));
 		}
 	}
 
@@ -227,6 +227,7 @@ public:
 	{
 		return note_type;
 	}
+
 private:
 	POINT2 pos_hold_start = { 0,0 };
 	POINT2 pos_hold_end = { 0,0 };

@@ -140,7 +140,6 @@
     <ClInclude Include="note.h" />
     <ClInclude Include="opening_scene.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="scene_manager.h" />
     <ClInclude Include="select_songs_scene.h" />

@@ -66,8 +66,8 @@ public:
 
 	void on_draw(bool is_debug)
 	{ 
-		putimage_alpha(0, 0, &img_background_menu_scene, trans_strength);
-		putimage_alpha(pos_img_titie.x, pos_img_titie.y, &img_title, trans_strength);
+		putimage_alpha(0, 0, &img_background_menu_scene, nullptr, trans_strength);
+		putimage_alpha(pos_img_titie.x, pos_img_titie.y, &img_title, nullptr, trans_strength);
 		start_button.on_draw(pos_img_start_button.x, pos_img_start_button.y, trans_strength,
 			&img_start_button_idle, &img_start_button_hovered, &img_start_button_clicked);
 		setting_button.on_draw(pos_img_setting_button.x, pos_img_setting_button.y, trans_strength,

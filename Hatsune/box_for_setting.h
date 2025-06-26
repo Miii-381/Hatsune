@@ -53,7 +53,7 @@ public:
 
 	void on_draw()
 	{
-		putimage_alpha(pos_box.left, pos_box.top, &img_box_masking, 200);
+		putimage_alpha(pos_box.left, pos_box.top, &img_box_masking, nullptr, 200);
 		left_arrow.on_draw(pos_left_arrow.x, pos_left_arrow.y, 255, &img_left_arrow, nullptr);
 		right_arrow.on_draw(pos_right_arrow.x, pos_right_arrow.y, 255, &img_right_arrow, nullptr);
 		outtextxy_shaded(pos_text.x, pos_text.y, str.c_str());

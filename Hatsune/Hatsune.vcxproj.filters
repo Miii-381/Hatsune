@@ -68,9 +68,6 @@
     <ClInclude Include="timer.h">
       <Filter>头文件\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesManager.h">
-      <Filter>头文件\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="Atlas.h">
       <Filter>头文件\Utilities</Filter>
     </ClInclude>

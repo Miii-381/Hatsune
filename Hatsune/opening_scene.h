@@ -50,7 +50,7 @@ public:
 
 	void on_draw(bool is_debug)
 	{
-		putimage_alpha(pos_img_title.x, pos_img_title.y, &img_background_opening_scene, trans_strength);
+		putimage_alpha(pos_img_title.x, pos_img_title.y, &img_background_opening_scene, nullptr, trans_strength);
 	}
 
 	void on_update(int delta, bool is_debug)

@@ -15,15 +15,15 @@ public:
 		switch (status)
 		{
 		case Button::Status::Idle:
-			putimage_alpha(x, y, img_idle, strength);
+			putimage_alpha(x, y, img_idle, nullptr, strength);
 			if(is_debug) printf("Idle ");
 			break;
 		case Button::Status::Hovered:
-			putimage_alpha(x, y, img_hovered, strength);
+			putimage_alpha(x, y, img_hovered, nullptr, strength);
 			if (is_debug) printf("Hovered ");
 			break;
 		case Button::Status::Clicked:
-			putimage_alpha(x, y, img_clicked, strength);
+			putimage_alpha(x, y, img_clicked, nullptr, strength);
 			if (is_debug) printf("Clicked ");
 			break;
 		}
@@ -34,15 +34,15 @@ public:
 		switch (status)
 		{
 		case Button::Status::Idle:
-			putimage_alpha_shadow(x, y, img, img_shadow, strength);
+			putimage_alpha(x, y, img, img_shadow, strength);
 			if (is_debug) printf("Idle ");
 			break;
 		case Button::Status::Hovered:
-			putimage_alpha_shadow(x + 1, y + 1, img, img_shadow, strength);
+			putimage_alpha(x + 1, y + 1, img, img_shadow, strength);
 			if (is_debug) printf("Hovered ");
 			break;
 		case Button::Status::Clicked:
-			putimage_alpha_shadow(x + 1, y + 1, img, img_shadow, strength);
+			putimage_alpha(x + 1, y + 1, img, img_shadow, strength);
 			if (is_debug) printf("Clicked ");
 			break;
 		}
