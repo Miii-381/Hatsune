@@ -2,3 +2,9 @@
 Hatsune/x64
 x64/
 初始之音——素材/
+
+# beatmaps - 只保留 song_1 到 song_3
+Hatsune/resources/beatmaps/song_*/
+!Hatsune/resources/beatmaps/song_1/
+!Hatsune/resources/beatmaps/song_2/
+!Hatsune/resources/beatmaps/song_3/

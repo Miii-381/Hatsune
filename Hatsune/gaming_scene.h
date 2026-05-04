@@ -1,6 +1,7 @@
 #ifndef _GAMING_SCENE_H_
 #define _GAMING_SCENE_H_
 
+#include "ResourcesManager.h"
 #include "scene.h"
 #include "scene_manager.h"
 #include "Atlas.h"
@@ -16,34 +17,12 @@
 #include <list>
 
 extern SceneManager scene_manager;
-extern Atlas songs_cover;
-extern Atlas songs_background;
-extern IMAGE img_cover_shadow_1_1;
-extern IMAGE img_cover_shadow_4_3;
-extern IMAGE img_cover_shadow_16_9;
-extern IMAGE img_masking;
-extern IMAGE img_masking_miku;
-extern IMAGE img_track;
-extern IMAGE img_track_effect;
-extern IMAGE img_click;
-extern IMAGE img_pause;
-extern IMAGE img_continue_button_idle;
-extern IMAGE img_continue_button_hovered;
-extern IMAGE img_continue_button_clicked;
-extern IMAGE img_end_button_idle;
-extern IMAGE img_end_button_hovered;
-extern IMAGE img_end_button_clicked;
-extern IMAGE img_exit_button_idle;
-extern IMAGE img_exit_button_hovered;
-extern IMAGE img_exit_button_clicked;
-
-extern LOGFONT font_yahei;
-extern LOGFONT font_miku;
 
 class GamingScene : public Scene
 {
 public:
-	struct KeyStatus										// 按键状态，用来实现按键特效显示
+	// 跟踪每个轨道按键（D、F、J、K）当前是否被按下
+	struct KeyStatus
 	{
 		bool status_D_now = false;
 		bool status_F_now = false;
@@ -59,17 +38,19 @@ public:
 		timer_blur.set_wait_time(2);
 		timer_blur.set_callback([&](int delta)
 			{
+				// 逐渐淡入场景过渡效果
 				trans_strength_transition = max(trans_strength_transition - 1, 0);
 				if (trans_strength_transition == 0)
 				{
 					transision_complete = true;
 					if (transision_complete)
 					{
+						// 游戏正式开始前的倒计时
 						game_start_wait_counter--;
 						if (!game_start_wait_counter)
 						{
 							game_start = true;
-							settextstyle(&font_miku);
+							settextstyle(&ResourceMgr.font_miku);
 						}
 					}
 				}
@@ -82,48 +63,52 @@ public:
 	void on_enter(bool is_debug)
 	{
 		setfillcolor(0x7bbff8);
-		srand(static_cast<unsigned int>(time(0)));		// static_cast：c++中的强制类型转换
-		enter_time = std::chrono::system_clock::now();
-		// 过渡界面的歌曲封面、背景阴影和信息字体
-		font_yahei.lfHeight = 35;
-		settextstyle(&font_yahei);
+		srand(static_cast<unsigned int>(time(0)));
 
-		img_current_song_bg = songs_background.get_image(origin_info.ID);
-		img_current_song_cover = songs_cover.get_image(origin_info.ID);
-		if (songs_cover.get_scale(origin_info.ID) == songs_cover.scale_1_1)
-			img_current_song_shadow = &img_cover_shadow_1_1;
-		else if (songs_cover.get_scale(origin_info.ID) == songs_cover.scale_4_3)
-			img_current_song_shadow = &img_cover_shadow_4_3;
-		else if (songs_cover.get_scale(origin_info.ID) == songs_cover.scale_16_9)
-			img_current_song_shadow = &img_cover_shadow_16_9;
+		enter_time = std::chrono::system_clock::now();
+
+		// 使用更大的字体显示歌曲信息
+		ResourceMgr.font_yahei.lfHeight = 35;
+		settextstyle(&ResourceMgr.font_yahei);
+
+		img_current_song_bg = ResourceMgr.songs_background.get_image(origin_info.ID);
+		img_current_song_cover = ResourceMgr.songs_cover.get_image(origin_info.ID);
+		if (ResourceMgr.songs_cover.get_scale(origin_info.ID) == ResourceMgr.songs_cover.scale_1_1)
+			img_current_song_shadow = &ResourceMgr.img_cover_shadow_1_1;
+		else if (ResourceMgr.songs_cover.get_scale(origin_info.ID) == ResourceMgr.songs_cover.scale_4_3)
+			img_current_song_shadow = &ResourceMgr.img_cover_shadow_4_3;
+		else if (ResourceMgr.songs_cover.get_scale(origin_info.ID) == ResourceMgr.songs_cover.scale_16_9)
+			img_current_song_shadow = &ResourceMgr.img_cover_shadow_16_9;
 
 		pos_current_song_cover.x = (getwidth() - img_current_song_cover->getwidth()) / 2;
-		if (songs_cover.get_scale(origin_info.ID) == songs_cover.scale_1_1)
+		if (ResourceMgr.songs_cover.get_scale(origin_info.ID) == ResourceMgr.songs_cover.scale_1_1)
 			pos_current_song_cover.y = 100;
-		else if (songs_cover.get_scale(origin_info.ID) == songs_cover.scale_4_3)
+		else if (ResourceMgr.songs_cover.get_scale(origin_info.ID) == ResourceMgr.songs_cover.scale_4_3)
 			pos_current_song_cover.y = 150;
-		else if (songs_cover.get_scale(origin_info.ID) == songs_cover.scale_16_9)
+		else if (ResourceMgr.songs_cover.get_scale(origin_info.ID) == ResourceMgr.songs_cover.scale_16_9)
 			pos_current_song_cover.y = 150;
 		
 		pos_info_name_text.x = (getwidth() - textwidth(origin_info.song_name)) / 2;
 		pos_info_name_text.y = pos_current_song_cover.y + img_current_song_cover->getheight() + 10;
 		pos_info_singer_text.x = (getwidth() - textwidth(origin_info.singer_name)) / 2;
-		pos_info_singer_text.y = pos_info_name_text.y + font_yahei.lfHeight + 1;
+		pos_info_singer_text.y = pos_info_name_text.y + ResourceMgr.font_yahei.lfHeight + 1;
 
-		// 按钮判定范围
+		// 定义继续按钮的可点击区域
 		region_continue_button.top = pos_continue_button.y;
 		region_continue_button.left = pos_continue_button.x;
-		region_continue_button.bottom = region_continue_button.top + img_continue_button_idle.getheight();
-		region_continue_button.right = region_continue_button.left + img_continue_button_idle.getwidth();
+		region_continue_button.bottom = region_continue_button.top + ResourceMgr.img_continue_button_idle.getheight();
+		region_continue_button.right = region_continue_button.left + ResourceMgr.img_continue_button_idle.getwidth();
 
+		// 定义结束按钮的可点击区域
 		region_end_button.top = pos_end_button.y;
 		region_end_button.left = pos_end_button.x;
-		region_end_button.bottom = region_end_button.top + img_end_button_idle.getheight();
-		region_end_button.right = region_end_button.left + img_end_button_idle.getwidth();
+		region_end_button.bottom = region_end_button.top + ResourceMgr.img_end_button_idle.getheight();
+		region_end_button.right = region_end_button.left + ResourceMgr.img_end_button_idle.getwidth();
 
 		play_pos_get.clear();
 		play_pos_get = _T("status song_") + std::to_string(origin_info.ID) + _T(" position");
 
+		// 将歌曲总时长格式化为 HH:MM:SS 或 MM:SS 字符串
 		int s, m, h;
 		msToTime(origin_info.song_length, s, m, h);
 		if (h == 0)
@@ -146,7 +131,7 @@ public:
 	{
 		if (!game_pause)
 		{
-			// 开始前的淡入淡出
+			// 游戏开始前：处理过渡效果并等待游戏开始
 			if (game_start == false)
 			{
 				if (game_end == false)
@@ -164,13 +149,14 @@ public:
 					timer_blur.on_update(delta);
 				}
 			}
-			// 开始后的游戏逻辑
+			// 游戏中：运行谱面和音符更新
 			else
 			{
 				GetBeatmap();
 
 				if (is_debug) printf_s("delta = %d", delta);
 
+				// 更新每个轨道上的所有活动音符
 				for (auto it = line_D_display.begin(); it != line_D_display.end(); ++it)
 				{
 					(*it)->on_update(delta, game_time, is_debug);
@@ -194,28 +180,26 @@ public:
 				}
 				else
 				{
-					// 音乐播控
+					// 开始播放歌曲音频（仅一次）
 					if (music_play == false)
 					{
 						play_song_no_repeat(origin_info.ID);  
 						music_play = true;
 					}
 
+					// 将游戏时间与 MCI 播放位置同步
 					if (!game_end && transision_complete)
 					{
 						memset(play_pos, 0, sizeof(play_pos));
 						mciSendString(play_pos_get.c_str(), play_pos, sizeof(play_pos), NULL);
-						game_time = strtol(play_pos, NULL, 10); // 字符串转换为长整型
+						game_time = strtol(play_pos, NULL, 10);
 					}
-					//game_time = delta + game_time;		// 游戏时间累加，用于判定note和游戏是否结束
-					// 据新消息：使用帧间定时器会发生错误偏移量的累加，导致游戏速度变慢
-					// 弃用帧间定时器计算游戏时长，转而使用音乐播放时间戳进行游戏时长的确定，问题解决~
 					AccuracyCalculate();
 				}
-				// 应该是mci本身的问题或者是音符逻辑堆太多了，会导致游戏刚开始的时候，从过渡态转化到实际游戏时的那一瞬间出现卡顿
-				// 2024.11.23 把判定逻辑移到外面了,问题没解决...
+
+				// 从显示队列中移除已判定的音符，统计 Miss 和长条音符得分
 				if (!line_D_display.empty() && line_D_display.front()->get_judged())
-				{
+					{
 					if (line_D_display.front()->judge_level == Note::JudgeLevel::Miss)
 					{
 						judge_display = Note::JudgeLevel::Miss;
@@ -260,7 +244,7 @@ public:
 				}
 			}
 			
-			// 歌曲结束判定
+			// 歌曲结束：切换到结算界面
 			if (game_time >= origin_info.song_length && game_start == true && game_end == false)
 			{
 				game_start = false;
@@ -272,10 +256,11 @@ public:
 
 				region_end_button.top = pos_end_button.y;
 				region_end_button.left = pos_end_button.x;
-				region_end_button.bottom = region_end_button.top + img_end_button_idle.getheight();
-				region_end_button.right = region_end_button.left + img_end_button_idle.getwidth();
+				region_end_button.bottom = region_end_button.top + ResourceMgr.img_end_button_idle.getheight();
+				region_end_button.right = region_end_button.left + ResourceMgr.img_end_button_idle.getwidth();
 			}
-			// 结算页面更新
+
+			// 结算界面：分数滚动动画和准确率评级
 			if (game_end)
 			{
 				if (!point_change_finished)
@@ -293,10 +278,12 @@ public:
 						point_rolling = actual_point;
 						point_change_finished = true;
 						srand(static_cast<unsigned int>(time(0)));
+
+						// 根据准确率确定等级并播放对应的随机语音
 						if (Accuracy > 1 - 1e-6)
 						{
 							TCHAR str[256];
-							int num = rand() % 5 + 1;	// 有5首歌
+							int num = rand() % 5 + 1;
 							end_music = _T("Perfect_") + std::to_string(num);
 							Level = _T("Perfect!!!");
 							level_display = true;
@@ -307,7 +294,7 @@ public:
 						else if (Accuracy > 0.8 - 1e-6 && Accuracy <= 1 - 1e-6)
 						{
 							TCHAR str[256];
-							int num = rand() % 6 + 1;	// 有6首歌
+							int num = rand() % 6 + 1;
 							end_music = _T("Great_") + std::to_string(num);
 							Level = _T("Great!");
 							level_display = true;
@@ -318,7 +305,7 @@ public:
 						else if (Accuracy > 0.6 - 1e-6 && Accuracy <= 0.8 - 1e-6)
 						{
 							TCHAR str[256];
-							int num = rand() % 5 + 1;	// 有5首歌
+							int num = rand() % 5 + 1;
 							end_music = _T("Good_") + std::to_string(num);
 							Level = _T("Good~");
 							level_display = true;
@@ -329,9 +316,9 @@ public:
 						else if (Accuracy > 0.4 - 1e-6 && Accuracy <= 0.6 - 1e-6)
 						{
 							TCHAR str[256];
-							int num = rand() % 9 + 1;	// 有9首歌
+							int num = rand() % 9 + 1;
 							end_music = _T("Bad_") + std::to_string(num);
-							Level = _T("Bad＞︿＜");
+							Level = _T("Bad(T_T)");
 							level_display = true;
 							_stprintf_s(str, "play %s from 0", end_music.c_str());
 							mciSendString(str, NULL, 0, NULL);
@@ -340,7 +327,7 @@ public:
 						else if (Accuracy <= 0.4 - 1e-6)
 						{
 							TCHAR str[256];
-							int num = rand() % 8 + 1;	// 有8首歌
+							int num = rand() % 8 + 1;
 							end_music = _T("Worst_") + std::to_string(num);
 							Level = _T("WorstT_T");
 							level_display = true;
@@ -360,21 +347,21 @@ public:
 		if (is_debug)
 			std::cout << "gaming_scene" << std::endl;
 
-		// 背景
+		// 绘制带遮罩的背景
 		putimage_alpha(0, 0, img_current_song_bg);
-		putimage_alpha(0, 0, &img_masking, nullptr, trans_strength_bg);
+		putimage_alpha(0, 0, &ResourceMgr.img_masking, nullptr, trans_strength_bg);
 
-		// 入场动画绘制
+		// 过渡阶段：显示封面、歌曲信息，并在后台加载谱面
 		if (transision_complete == false)
 		{
-			putimage_alpha(0, 0, &img_masking, nullptr, trans_strength_transition);
+			putimage_alpha(0, 0, &ResourceMgr.img_masking, nullptr, trans_strength_transition);
 			putimage_alpha(pos_current_song_cover.x, pos_current_song_cover.y, img_current_song_cover, img_current_song_shadow, trans_strength_transition);
 			if (info_display)
 			{
 				outtextxy_shaded(pos_info_name_text.x, pos_info_name_text.y, origin_info.song_name);
 				outtextxy_shaded(pos_info_singer_text.x, pos_info_singer_text.y, origin_info.singer_name);
 			}
-			// 谱面加载（没办法，要想在显示封面时加载谱面，弱化加载感受，基于现在的游戏逻辑就只能写在on_draw方法里面，而且要提前绘制双缓冲内的图像...）
+			// 在过渡期间加载谱面数据以避免阻塞游戏
 			if (beatmap_loading == false)
 			{
 				FlushBatchDraw();
@@ -383,50 +370,53 @@ public:
 			}
 		}
 
-		// 游戏开始后的绘图逻辑
+		// 游戏中渲染：轨道、音符、分数、连击和判定
 		if (game_start)
 		{
 			printf_s("game_time:%ld", game_time);
 
-			// 轨道
-			putimage_alpha(pos_track_D.x, pos_track_D.y, &img_track);
-			putimage_alpha(pos_track_F.x, pos_track_F.y, &img_track);
-			putimage_alpha(pos_track_J.x, pos_track_J.y, &img_track);
-			putimage_alpha(pos_track_K.x, pos_track_K.y, &img_track);
+			putimage_alpha(pos_track_D.x, pos_track_D.y, &ResourceMgr.img_track);
+			putimage_alpha(pos_track_F.x, pos_track_F.y, &ResourceMgr.img_track);
+			putimage_alpha(pos_track_J.x, pos_track_J.y, &ResourceMgr.img_track);
+			putimage_alpha(pos_track_K.x, pos_track_K.y, &ResourceMgr.img_track);
 
-			for (auto it = line_D_display.begin(); it != line_D_display.end(); ++it)	// 迭代器访问list
+			// 绘制每个轨道上的所有活动音符
+			for (auto it = line_D_display.begin(); it != line_D_display.end(); ++it)
 			{
 				(*it)->on_draw(is_debug);
 			}
-			for (auto it = line_F_display.begin(); it != line_F_display.end(); ++it)	// 迭代器访问list
+			for (auto it = line_F_display.begin(); it != line_F_display.end(); ++it)
 			{
 				(*it)->on_draw(is_debug);
 			}
-			for (auto it = line_J_display.begin(); it != line_J_display.end(); ++it)	// 迭代器访问list
+			for (auto it = line_J_display.begin(); it != line_J_display.end(); ++it)
 			{
 				(*it)->on_draw(is_debug);
 			}
-			for (auto it = line_K_display.begin(); it != line_K_display.end(); ++it)	// 迭代器访问list
+			for (auto it = line_K_display.begin(); it != line_K_display.end(); ++it)
 			{
 				(*it)->on_draw(is_debug);
 			}
 
+			// 当按下对应按键时高亮轨道
 			if (key_status.status_D_now)
-				putimage_alpha(pos_track_D.x, pos_track_D.y, &img_track_effect);
+				putimage_alpha(pos_track_D.x, pos_track_D.y, &ResourceMgr.img_track_effect);
 			if (key_status.status_F_now)
-				putimage_alpha(pos_track_F.x, pos_track_F.y, &img_track_effect);
+				putimage_alpha(pos_track_F.x, pos_track_F.y, &ResourceMgr.img_track_effect);
 			if (key_status.status_J_now)
-				putimage_alpha(pos_track_J.x, pos_track_J.y, &img_track_effect);
+				putimage_alpha(pos_track_J.x, pos_track_J.y, &ResourceMgr.img_track_effect);
 			if (key_status.status_K_now)
-				putimage_alpha(pos_track_K.x, pos_track_K.y, &img_track_effect);
+				putimage_alpha(pos_track_K.x, pos_track_K.y, &ResourceMgr.img_track_effect);
 
-			font_miku.lfHeight = 80;
-			settextstyle(&font_miku);
+			// 绘制当前分数
+			ResourceMgr.font_miku.lfHeight = 80;
+			settextstyle(&ResourceMgr.font_miku);
 			point_display = std::to_string(actual_point);
 			outtextxy_shaded(getwidth() - textwidth(point_display.c_str()) - 20, 0, point_display.c_str());
 
-			font_miku.lfHeight = 50;
-			settextstyle(&font_miku);
+			// 绘制已播放时间 / 总时间
+			ResourceMgr.font_miku.lfHeight = 50;
+			settextstyle(&ResourceMgr.font_miku);
 
 			TCHAR play_pos[128] = { };
 			int s, m, h;
@@ -452,8 +442,9 @@ public:
 			_stprintf_s(play_pos, "%s / %s", play_pos, song_length);
 			outtextxy_shaded(getwidth() - textwidth(play_pos) - 20, textheight(point_display.c_str()) + 30, play_pos);
 
-			font_miku.lfHeight = 40;
-			settextstyle(&font_miku);
+			// 绘制判定文本（Perfect / Great / Good / Bad / Miss）
+			ResourceMgr.font_miku.lfHeight = 40;
+			settextstyle(&ResourceMgr.font_miku);
 
 			switch (judge_display)
 			{
@@ -478,6 +469,7 @@ public:
 			
 			printf("%d", judge_display);
 			
+			// 在右侧绘制准确率和连击数
 			TCHAR temp[256] = { };
 			_stprintf_s(temp, _T("Accuracy: %.2lf%%"), Accuracy * 100);
 			outtextxy_shaded(820, 300, temp);
@@ -485,51 +477,54 @@ public:
 			outtextxy_shaded(820, 350, temp);
 		}
 		
-		// 暂停界面绘图逻辑
+		// 暂停菜单：覆盖层和按钮
 		if (game_pause)
 		{
-			putimage_alpha(0, 0, &img_pause);
+			putimage_alpha(0, 0, &ResourceMgr.img_pause);
 			continue_button.on_draw(pos_continue_button.x, pos_continue_button.y, 255,
-				&img_continue_button_idle, &img_continue_button_hovered, &img_continue_button_clicked);
+				&ResourceMgr.img_continue_button_idle, &ResourceMgr.img_continue_button_hovered, &ResourceMgr.img_continue_button_clicked);
 
 			end_button.on_draw(pos_end_button.x, pos_end_button.y, 255,
-				&img_end_button_idle, &img_end_button_hovered, &img_end_button_clicked);
+				&ResourceMgr.img_end_button_idle, &ResourceMgr.img_end_button_hovered, &ResourceMgr.img_end_button_clicked);
 		}
 
-		// 结算界面绘图逻辑
+		// 结算界面：带有初音插画的結果显示
 		if (game_end)
 		{
-			putimage_alpha(90, 51, &img_masking_miku);
+			putimage_alpha(90, 51, &ResourceMgr.img_masking_miku);
 			if (level_display)
 			{
-				font_miku.lfHeight = 150;
-				settextstyle(&font_miku);
+				ResourceMgr.font_miku.lfHeight = 150;
+				settextstyle(&ResourceMgr.font_miku);
 				if (Level == _T("Great!") || Level == _T("Good~"))
 					outtextxy_shaded(660, 150, Level.c_str(), 0xC6EE76, 0xFFFFFF);
-				else if(Level == _T("Perfect!!!") || Level == _T("WorstT_T") || Level == _T("Bad＞︿＜"))
+				else if(Level == _T("Perfect!!!") || Level == _T("WorstT_T") || Level == _T("Bad????"))
 					outtextxy_shaded(560, 150, Level.c_str(), 0xC6EE76, 0xFFFFFF);
 			}
 
-			font_miku.lfHeight = 130;
-			settextstyle(&font_miku);
+			// 最终分数
+			ResourceMgr.font_miku.lfHeight = 130;
+			settextstyle(&ResourceMgr.font_miku);
 			outtextxy_shaded(120, 100, point_display.c_str());
 
-			font_miku.lfHeight = 40;
-			settextstyle(&font_miku);
+			// 准确率百分比
+			ResourceMgr.font_miku.lfHeight = 40;
+			settextstyle(&ResourceMgr.font_miku);
 			outtextxy_shaded(120, 226, _T("Accuracy:"));
 
-			font_miku.lfHeight = 100;
-			settextstyle(&font_miku);
+			ResourceMgr.font_miku.lfHeight = 100;
+			settextstyle(&ResourceMgr.font_miku);
 			outtextxy_shaded(140, 260, count_set[5].c_str());
 
-			font_miku.lfHeight = 50;
-			settextstyle(&font_miku);
+			// 每种判定的统计数据（Perfect / Great / Good / Bad / Miss）
+			ResourceMgr.font_miku.lfHeight = 50;
+			settextstyle(&ResourceMgr.font_miku);
 			outtextxy_shaded(130, 370, count_set[0].c_str());
 			outtextxy_shaded(500, 370, count_set[1].c_str());
 			outtextxy_shaded(130, 470, count_set[2].c_str());
 			outtextxy_shaded(500, 470, count_set[3].c_str());
 			outtextxy_shaded(130, 570, count_set[4].c_str());
-			end_button.on_draw(pos_end_button.x, pos_end_button.y, 255, &img_end_button_idle, &img_end_button_hovered, &img_end_button_clicked);
+			end_button.on_draw(pos_end_button.x, pos_end_button.y, 255, &ResourceMgr.img_end_button_idle, &ResourceMgr.img_end_button_hovered, &ResourceMgr.img_end_button_clicked);
 		}
 	}
 
@@ -540,6 +535,7 @@ public:
 
 		if (msg.message == WM_LBUTTONUP)
 		{
+			// 暂停时点击继续按钮 -> 恢复游戏
 			if (is_continue_button_clicked && game_pause)
 			{
 				mciSendString(_T("play button_selected from 0"), NULL, 0, NULL);
@@ -548,6 +544,7 @@ public:
 				is_continue_button_clicked = false;
 			}
 
+			// 暂停或结算界面点击结束按钮 -> 返回
 			if (is_end_button_clicked && game_end || is_end_button_clicked && game_pause)
 			{
 				mciSendString(_T("play button_selected from 0"), NULL, 0, NULL);
@@ -558,7 +555,7 @@ public:
 
 		if (msg.message == WM_KEYDOWN)		
 		{
-			// 暂停和退出逻辑
+			// ESC键：游戏中暂停 / 结算界面返回
 			if (game_pause == false)
 			{
 				if (msg.vkcode == VK_ESCAPE)
@@ -594,8 +591,8 @@ public:
 				}
 			}
 
-			// note识别逻辑
-			if (msg.vkcode == 0x44)	// Key D
+			// D键：判定 D 轨道的音符
+			if (msg.vkcode == 0x44)
 			{
 				if (is_debug)
 					std::cout << " D_pressed ";
@@ -613,7 +610,8 @@ public:
 				}
 				
 			}
-			if (msg.vkcode == 0x46)	// Key F
+			// F键：判定 F 轨道的音符
+			if (msg.vkcode == 0x46)
 			{
 				if (is_debug)
 					std::cout << " F_pressed ";
@@ -631,7 +629,8 @@ public:
 				}
 				
 			}
-			if (msg.vkcode == 0x4A)	// Key J
+			// J键：判定 J 轨道的音符
+			if (msg.vkcode == 0x4A)
 			{
 				if (is_debug)
 					std::cout << " J_pressed ";
@@ -648,7 +647,8 @@ public:
 					judge_status_calculate(judge_display);
 				}
 			}
-			if (msg.vkcode == 0x4B)	// Key K
+			// K键：判定 K 轨道的音符
+			if (msg.vkcode == 0x4B)
 			{
 				if (is_debug)
 					std::cout << " K_pressed ";
@@ -666,7 +666,7 @@ public:
 				}
 			}
 
-			// 调试代码
+			// 调试快捷键：设置不同的分数场景用于测试
 			if (is_debug)
 			{
 				switch (msg.vkcode) {
@@ -696,6 +696,7 @@ public:
 		
 		if (msg.message == WM_KEYUP)
 		{
+			// D键松开：如果当前音符是长条，则在松开时判定
 			if (msg.vkcode == 0x44)
 			{
 				if (is_debug)
@@ -704,13 +705,13 @@ public:
 				key_status.status_D_now = false;
 				if (!line_D_display.empty() && line_D_display.front()->get_type() == Note::NoteType::Hold)
 				{
-					// mciSendString(_T("play click_hit from 0"), NULL, 0, NULL);     由于程序判断逻辑的顺序性，导致hold松键和其他音符按键处于一起的时候，音效会出现微小演出，暂时没法解决，除非重构判断逻辑或者存储之前按键状态，待所有判断逻辑执行完之后统一播放按键音效
 					line_D_display.front()->judge(game_time, is_debug, msg.message);
 					judge_display = line_D_display.front()->judge_level;
 					line_D_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus); 
 					judge_status_calculate(judge_display);
 				}
 			}
+			// F键松开：长条判定
 			if (msg.vkcode == 0x46)
 			{
 				if (is_debug)
@@ -719,13 +720,13 @@ public:
 				key_status.status_F_now = false;
 				if (!line_F_display.empty() && line_F_display.front()->get_type() == Note::NoteType::Hold)
 				{
-					// mciSendString(_T("play click_hit from 0"), NULL, 0, NULL);
 					line_F_display.front()->judge(game_time, is_debug, msg.message);
 					judge_display = line_F_display.front()->judge_level;
 					line_F_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
 					judge_status_calculate(judge_display);
 				}
 			}
+			// J键松开：长条判定
 			if (msg.vkcode == 0x4A)
 			{
 				if (is_debug)
@@ -734,13 +735,13 @@ public:
 				key_status.status_J_now = false;
 				if (!line_J_display.empty() && line_J_display.front()->get_type() == Note::NoteType::Hold)
 				{
-					// mciSendString(_T("play click_hit from 0"), NULL, 0, NULL);
 					line_J_display.front()->judge(game_time, is_debug, msg.message);
 					judge_display = line_J_display.front()->judge_level;
 					line_J_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
 					judge_status_calculate(judge_display);
 				}
 			}
+			// K键松开：长条判定
 			if (msg.vkcode == 0x4B)
 			{
 				if (is_debug)
@@ -749,7 +750,6 @@ public:
 				key_status.status_K_now = false;
 				if (!line_K_display.empty() && line_K_display.front()->get_type() == Note::NoteType::Hold)
 				{
-					// mciSendString(_T("play click_hit from 0"), NULL, 0, NULL);
 					line_K_display.front()->judge(game_time, is_debug, msg.message);
 					judge_display = line_K_display.front()->judge_level;
 					line_K_display.front()->get_point(actual_point, ideal_point, combo, ideal_combo, combo_bonus);
@@ -759,6 +759,7 @@ public:
 		}
 	}
 
+	// 设置虚假的游戏结果用于调试测试
 	void set_debug_vals() {
 		ideal_point = 600000;
 		PerfectCount = 100;
@@ -776,10 +777,11 @@ public:
 
 		region_end_button.top = pos_end_button.y;
 		region_end_button.left = pos_end_button.x;
-		region_end_button.bottom = region_end_button.top + img_end_button_idle.getheight();
-		region_end_button.right = region_end_button.left + img_end_button_idle.getwidth();
+		region_end_button.bottom = region_end_button.top + ResourceMgr.img_end_button_idle.getheight();
+		region_end_button.right = region_end_button.left + ResourceMgr.img_end_button_idle.getwidth();
 	}
 
+	// 退出时重置所有场景状态
 	void on_exit(bool is_debug)
 	{
 		stop_song(origin_info.ID);
@@ -811,7 +813,6 @@ public:
 		pos_end_button = { 780,480 };
 		img_current_song_cover = nullptr;
 		img_current_song_bg = nullptr;
-		img_current_song_bg = nullptr;
 		trans_strength_transition = 255;
 		trans_strength_bg = 255;
 		timer_blur.restart();
@@ -821,7 +822,6 @@ public:
 		point_rolling = 0;
 		combo = 0;
 		ideal_combo = 0;
-		point_rolling = 0;
 		PerfectCount = 0;
 		GreatCount = 0;
 		GoodCount = 0;
@@ -834,17 +834,18 @@ public:
 		}
 		level_display = false;
 		Level.clear();
-		font_miku.lfHeight = 80;
-		font_yahei.lfHeight = 30;
-		settextstyle(&font_yahei);
+		ResourceMgr.font_miku.lfHeight = 80;
+		ResourceMgr.font_yahei.lfHeight = 30;
+		settextstyle(&ResourceMgr.font_yahei);
 		memset(play_pos, '\0', sizeof(play_pos));
 	}
 
-	// 铺面加载
+	// 解析谱面文件并用 Click / Hold 音符填充 note_storage
 	void load_beatmap()
 	{
 		int ID = 0;
-		int last_start_time = 0;		// 谱面加载时根据当前note_time和上个note_time计算ID
+		int last_start_time = 0;
+
 		TCHAR path_template[256] = { };
 		_stprintf_s(path_template, _T("./resources/beatmaps/song_%d/%s.txt"), origin_info.ID, origin_info.Level[current_level].c_str());
 
@@ -852,9 +853,9 @@ public:
 		if (file.is_open() == false)
 		{
 			TCHAR path_error_msg[1024] = { };
-			_stprintf_s(path_error_msg, sizeof(path_error_msg),_T("谱面文件获取错误，请检查后重新启动程序\n谱面文件位于：.\\resources\\beatmaps\\song_%d\\%s.txt"), origin_info.ID, origin_info.Level[current_level].c_str());
+			_stprintf_s(path_error_msg, sizeof(path_error_msg),_T("??????????????????\n????????.\\resources\\beatmaps\\song_%d\\%s.txt"), origin_info.ID, origin_info.Level[current_level].c_str());
 			perror("fopen error!");
-			MessageBox(GetHWnd(), path_error_msg, _T("初始之音"), MB_OK | MB_ICONERROR);
+			MessageBox(GetHWnd(), path_error_msg, _T("??????"), MB_OK | MB_ICONERROR);
 			SendMessage(GetHWnd(), WM_CLOSE, NULL, NULL);
 		}
 		memset(path_template, '\0', sizeof(path_template));
@@ -870,34 +871,30 @@ public:
 			if (is_debug)
 				std::cout << line << std::endl;
 
+			// 每行格式：type,pos,start_time,end_time
 			if (data >> type >> delimiter && delimiter == ',' &&
 				data >> pos >> delimiter && delimiter == ',' &&
 				data >> start_time >> delimiter && delimiter == ',' &&
 				data >> end_time)
 			{
-				// 如果成功读取了三个整数并且它们之间由逗号分隔  
 				if (is_debug)
 					std::cout << type << ' ' << pos << ' ' << start_time << ' ' << end_time << ' ' << std::endl;
 			}
 			else
 			{
-				MessageBox(GetHWnd(), _T("音符加载错误，请检查后重新运行游戏（TxT）"), _T("初始之音"), MB_OK | MB_ICONERROR);
+				MessageBox(GetHWnd(), _T("????????????????????TxT?????"), _T("??????"), MB_OK | MB_ICONERROR);
 				SendMessage(GetHWnd(), WM_CLOSE, NULL, NULL);
 			}
 
+			// 按开始时间分组；相同开始时间的音符放入同一个向量
 			if (last_start_time != start_time)
 			{
 				ID += 1;
-				note_storage.push_back(std::vector<Note*>()); // 为二维数组添加新的横行（构造函数）
+				note_storage.push_back(std::vector<Note*>());
 			}
 
 			last_start_time = start_time;
 
-			// note击打点与歌曲不吻合问题初步判定为歌曲播放速度较程序运行速度更快
-			// 歌曲在另一个线程中正常播放，但程序是单线程运行，可能存在一定阻塞现象
-			// 现在为click音符赋予初始偏移量大致解决了问题，但是hold音符仍然会拖慢程序运行速度
-
-			// 2024/11/2 问题解决，直接获取音频播放时间戳作为游戏时间，能对齐了~
 			if(type == 1)
 				note_storage[ID - 1].push_back(new Click(numToPosition(pos), start_time, ID, type));
 			else if(type == 2)
@@ -905,7 +902,7 @@ public:
 		}
 	}
 
-	// 谱面加载时的位置数据转换
+	// 将数字轨道标识符转换为 Note::Position 枚举
 	Note::Position numToPosition(int num)
 	{
 		if (num == 1)
@@ -918,13 +915,13 @@ public:
 			return Note::Position::Key_K;
 		else
 		{
-			MessageBox(GetHWnd(), _T("音符位置书写错误，请检查后重新运行游戏（TxT）"), _T("初始之音"), MB_OK | MB_ICONERROR);
+			MessageBox(GetHWnd(), _T("??????????????????????????TxT?????"), _T("??????"), MB_OK | MB_ICONERROR);
 			SendMessage(GetHWnd(), WM_CLOSE, NULL, NULL);
 			return Note::Position::Invalid;
 		}
 	}
 	
-	// 实时加载谱面数据
+	// 根据当前游戏时间将即将到来的音符从存储区推入各轨道的显示队列
 	void GetBeatmap()
 	{
 		if (game_time <= 0)
@@ -979,7 +976,7 @@ public:
 		}
 	}
 
-	// 游戏过程中的数据记录
+	// 增加给定判定等级的计数器
 	void judge_status_calculate(Note::JudgeLevel level)
 	{
 		switch (level)
@@ -1004,7 +1001,7 @@ public:
 		}
 	}
 
-	// 结算界面的游戏数据显示
+	// 构建结算界面的统计字符串（Perfect/Great/Good/Bad/Miss 数量 + 准确率）
 	void count_set_manage()
 	{
 		count_set[0] = _T("Perfect: ") + std::to_string(PerfectCount) + _T('x');
@@ -1017,7 +1014,7 @@ public:
 		count_set[5] = temp;
 	}
 	
-	// 准度计算
+	// 计算准确率：实际得分 / 理想得分
 	void AccuracyCalculate()
 	{
 		if (ideal_point == 0)
@@ -1026,59 +1023,93 @@ public:
 			Accuracy = (float)actual_point / ideal_point;
 	}
 
-private: // note
-	std::vector<std::vector<Note*>> note_storage;		// 存储音符，以便调用。
+private:
+	// 二维向量，按节拍时间对所有音符进行分组；每组可能包含多个同时出现的音符
+	std::vector<std::vector<Note*>> note_storage;
+	
+	// 下一个要送入显示队列的音符组索引
+	int note_count = 0;
 
-	int note_count = 0;									// 记录调用到第几行了
-
-	std::list<Note*> line_D_display;					// 音符的实时加载调用
+	// 每个轨道（D、F、J、K）的实时显示队列
+	std::list<Note*> line_D_display;
 	std::list<Note*> line_F_display;
 	std::list<Note*> line_J_display;
 	std::list<Note*> line_K_display;
 
-	Note::JudgeLevel judge_display = Note::JudgeLevel::Invalid;	// note判定结果显示
+	// 当前显示的判定结果
+	Note::JudgeLevel judge_display = Note::JudgeLevel::Invalid;
 
-	std::string play_pos_get;							// 用于获取当前播放位置
-	TCHAR play_pos[128];								// 存放当前播放位置（mci返回的是字符串，所以只能存放在字符串中）
-	TCHAR song_length[64];								// 存放经转换后的歌曲长度字符串
+	// MCI 命令字符串，用于查询当前播放位置
+	std::string play_pos_get;
+	// 格式化后的当前播放时间缓冲区（MM:SS）
+	TCHAR play_pos[128];
+	// 格式化后的歌曲总时长（MM:SS）
+	TCHAR song_length[64];
 
-	// 游戏数据记录
-	int actual_point = 0;			// 实际游玩分数
-	int ideal_point = 0;			// 理论值
-	int point_rolling = 0;			// 结算界面分数滚动控制
+	// 目前已获得的实际分数
+	int actual_point = 0;
+	// 最大可能分数
+	int ideal_point = 0;
+	// 结算界面上显示的动画滚动分数
+	int point_rolling = 0;
 
-	int	combo = 0;					// 连击数
-	int ideal_combo = 0;			// 理论连击数	
-	double combo_bonus = 1.0;		// 奖励倍率
+	// 当前连击数
+	int combo = 0;
+	// 最大可能连击数
+	int ideal_combo = 0;
+	// 连击分数倍率
+	double combo_bonus = 1.0;
 
-	unsigned int PerfectCount = 0;	// 数据记录
+	// 每种判定等级的计数器
+	unsigned int PerfectCount = 0;
 	unsigned int GreatCount = 0;
 	unsigned int GoodCount = 0;
 	unsigned int BadCount = 0;
 	unsigned int MissCount = 0;
+
+	// 击中准确率（0.0 到 1.0）
 	float Accuracy = 0.0;
 
-	bool beatmap_loading = false;	// 谱面是否被加载，防止重复加载
+	// 谱面数据是否已加载
+	bool beatmap_loading = false;
 
-	std::string end_music;			// 存储结算音乐名，用于音乐播控
+	// 随机选择的结算界面语音片段名称（例如 "Perfect_3"）
+	std::string end_music;
 
-private: // 场景
-	std::chrono::system_clock::time_point enter_time;		// 进入场景的时间
-	std::chrono::system_clock::time_point current_time;		// 当前时间
-	Timer timer_blur;										// 淡入淡出定时器
-	int game_time = -1000;									// 游戏计时器，使用它与谱面内的音符时间戳进行音符判定(给个负的初值，让刚开始时的音符不会突兀出现)
-	int game_start_wait_counter = 100;						// 过场动画结束后的停顿时间（越大越久，看debug的值确定循环时间再来计算等待时间）
-	BYTE trans_strength_transition = 255;					// 过渡画面整体透明度
-	BYTE trans_strength_bg = 255;							// 背景透明度
-	bool game_start = false;								// 是否可以开始游戏
-	bool game_end = false;									// 游戏是否结束
-	bool music_play = false;								// 音乐是否正在播放
-	bool info_display = true;								// 是否显示歌曲信息（过场动画）
-	bool transision_complete = false;						// 开始的过场动画是否结束
-	bool game_pause = false;								// 游戏是否暂停
-	bool point_change_finished = false;						// 分数显示是否完成
+private:
+	// 进入场景的时间戳
+	std::chrono::system_clock::time_point enter_time;
+	// 用于测量过渡期间经过时间的时间戳
+	std::chrono::system_clock::time_point current_time;
+	// 控制淡入过渡效果的计时器
+	Timer timer_blur;
+
+	// 游戏中经过的时间（毫秒）；负值表示在游戏开始前的准备阶段
+	int game_time = -1000;
+	// 过渡完成后游戏正式开始前的延迟帧计数器
+	int game_start_wait_counter = 100;
+
+	// 场景过渡淡入效果的透明度级别（255 = 完全不透明）
+	BYTE trans_strength_transition = 255;
+	// 背景遮罩的透明度级别
+	BYTE trans_strength_bg = 255;
+
+	// 游戏是否已开始（音符正在下落）
+	bool game_start = false;
+	// 歌曲是否已结束并显示结算界面
+	bool game_end = false;
+	// 歌曲音频是否已开始播放
+	bool music_play = false;
+	// 过渡期间歌曲信息（名称、歌手）是否当前可见
+	bool info_display = true;
+	// 场景过渡动画是否已完成
+	bool transision_complete = false;
+	// 游戏是否暂停
+	bool game_pause = false;
+	// 结算界面上的滚动分数动画是否已完成
+	bool point_change_finished = false;
 	
-	// 暂停界面按钮封装
+	// 暂停 / 结算界面按钮
 	Button continue_button;
 	Button end_button;
 	POINT pos_continue_button = { 260,460 };
@@ -1088,24 +1119,38 @@ private: // 场景
 	bool is_continue_button_clicked = false;
 	bool is_end_button_clicked = false;
 
-	std::vector<std::string> count_set;						// 游玩数据记录，结算界面显示（在场景的构造函数里固定其长度）
-	std::string point_display;								// 结算界面分数实际显示
-	bool level_display;										// 结算界面等级是否显示
-	std::string Level;										// 结算界面等级显示
+	// 结算界面统计数据的字符串数组（Perfect/Great/Good/Bad/Miss/Accuracy）
+	std::vector<std::string> count_set;
+	// 当前分数的字符串表示，用于显示
+	std::string point_display;
+	// 是否应在结算界面上显示等级标签
+	bool level_display;
+	// 等级标签文本（例如 "Perfect!!!"、"Great!"）
+	std::string Level;
 
-	bool score_increase_SFX_play;							// 分数增加音效播控
+	// 分数滚动音效是否正在播放
+	bool score_increase_SFX_play;
 
-private: // 图片
-	IMAGE* img_current_song_cover = nullptr;				// 当前选择歌曲封面图片
-	IMAGE* img_current_song_shadow = nullptr;				// 封面阴影
-	IMAGE* img_current_song_bg = nullptr;					// 当前选择歌曲背景图片
-	POINT pos_current_song_cover = { 0,0 };					// 当前选择歌曲封面位置
-	POINT pos_info_name_text = { 0,0 };						// 歌名文字
-	POINT pos_info_singer_text = { 0,0 };					// 歌手文字
-	POINT pos_track_D = { 481,0 };							// 轨道图片位置
-	POINT pos_track_F = { 562,0 };							
-	POINT pos_track_J = { 643,0 };							
-	POINT pos_track_K = { 724,0 };							
+private:
+	// 当前歌曲的封面图片
+	IMAGE* img_current_song_cover = nullptr;
+	// 与封面宽高比匹配的阴影/装饰框
+	IMAGE* img_current_song_shadow = nullptr;
+	// 当前歌曲的完整背景图片
+	IMAGE* img_current_song_bg = nullptr;
+
+	// 封面的屏幕位置
+	POINT pos_current_song_cover = { 0,0 };
+	// 歌曲名称文本的屏幕位置
+	POINT pos_info_name_text = { 0,0 };
+	// 歌手名称文本的屏幕位置
+	POINT pos_info_singer_text = { 0,0 };
+
+	// 四个音符轨道的固定屏幕位置
+	POINT pos_track_D = { 481,0 };
+	POINT pos_track_F = { 562,0 };
+	POINT pos_track_J = { 643,0 };
+	POINT pos_track_K = { 724,0 };
 };
 
 

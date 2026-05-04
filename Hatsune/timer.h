@@ -5,86 +5,103 @@
 #include <ctime>
 #include <functional>
 
-
+// 定时器类：用于处理延迟执行、周期性回调等定时任务
 class Timer
 {
 public:
 	Timer() = default;
 	~Timer() = default;
 
-	void restart()										//定时器的状态重置
+	// 重启定时器（重置已过去时间）
+	void restart()
 	{
 		pass_time = 0;
 		shotted = false;
 	}
 
-	void set_wait_time(int val)							// 定时器等待时间
+	// 设置等待时间（毫秒）
+	// val: 目标等待时间
+	void set_wait_time(int val)
 	{
 		wait_time = val;
 	}
 
-	void set_one_shot(bool flag)						// 定时器是否单次触发
+	// 设置是否为单次触发模式
+	// flag: true为单次触发，false为循环触发
+	void set_one_shot(bool flag)
 	{
 		one_shot = flag;
 	}
 
-	void set_callback(std::function<void()> callback)	// 设置自定义的回调函数（这里使用std::function函数接受一个无参，返回值为void类型的任何可调用对象，并将其存放在callback成员变量中等待调用）
+	// 设置无参数回调函数
+	// callback: 要执行的回调函数
+	void set_callback(std::function<void()> callback)
 	{
-		this->callback = callback;	// 此处使用this是为了明确指出操作的是当前对象的callback成员变量，而不是形参
+		this->callback = callback;
 	}
 
-	void set_callback(std::function<void(int)> callback)	// 设置自定义的回调函数（这里使用std::function函数接受有一个参数，返回值为void类型的任何可调用对象，并将其存放在callback成员变量中等待调用）
+	// 设置带整数参数的回调函数（参数表示触发的次数）
+	// callback: 要执行的回调函数
+	void set_callback(std::function<void(int)> callback)
 	{
-		this->callback_int = callback;	// 此处使用this是为了明确指出操作的是当前对象的callback成员变量，而不是形参
+		this->callback_int = callback;
 	}
 
-	void pause()										// 计时器的暂停
+	// 暂停定时器
+	void pause()
 	{
 		paused = true;
 	}
 
-	void resume()										// 计时器的恢复运行
+	// 恢复定时器
+	void resume()
 	{
 		paused = false;
 	}
 
+	// 获取定时器的暂停状态
+	// 返回值：true表示已暂停，false表示运行中
 	bool get_status() const
 	{
 		return paused;
 	}
 
-	void on_update(int delta)							// 计时器更新
+	// 每帧更新定时器状态
+	// delta: 帧时间间隔（毫秒）
+	void on_update(int delta)
 	{
-		if (paused)					// 检查是否暂停，暂停就不执行计时器时间更新
+		if (paused)
 			return;
 
 		int time = 0;
-		pass_time += delta;			// 累加帧更新实际过去的时间
-		time += delta / wait_time; 	// 计算在过去的时间里需要重复几次定时器
+		pass_time += delta;           // 累加已过时间
+		time += delta / wait_time;    // 计算触发次数
 
-		if (pass_time >= wait_time) // 计时器时间与期望定时进行比较
+		// 如果已过时间达到等待时间，则触发回调
+		if (pass_time >= wait_time)
 		{
+			// 检查是否应该触发（非单次模式或单次模式但未触发过）
 			if ((!one_shot || (one_shot && !shotted)) && callback)
 				for (int i = 0; i < time; i++)
 				{
-					callback();
-				}  // 如果不是一次性的，或一次性但未触发（总之就是定时器是否能被触发），并且callback不为空（std::function对象可被隐式转换为bool值），则尝试按照重复次数执行赋予的回调函数
+					callback();       // 调用无参数回调
+				}
 			else if ((!one_shot || (one_shot && !shotted)) && callback_int)
-				callback_int(time);// 如果不是一次性的，或一次性但未触发（总之就是定时器是否能被触发），并且callback_int不为空（std::function对象可被隐式转换为bool值），则尝试按照重复次数执行赋予的回调函数
-			shotted = true;	 // 触发标记
-			pass_time = 0;   // 重置定时器
+				callback_int(time);   // 调用带参数回调（传入触发次数）
+			
+			shotted = true;           // 标记为已触发
+			pass_time = 0;            // 重置已过时间
 		}
 	}
 
 private:
-	int pass_time = 0;					// 已过时间
-	int wait_time = 0;					// 等待时间
-	bool paused = false;				// 是否暂停
-	bool shotted = false;				// 是否触发
-	bool one_shot = false;				// 单次触发
-	std::function<void()> callback;		// 存储程序员手动赋予的回调函数（std::function其实可以看作是一个函数指针的高级和灵活的替代品（虽然它不只可以存放函数），设置一个变量，变量类型属于function模板，
-										// 这个变量现在可被认为是一个能够存储任何符合其模板参数指定签名（即参数类型和返回类型）的可调用对象的容器，等待接受一个可调用对象，并在需要时使用这个变量名调用存放的对象）
-	std::function<void(int)> callback_int;		
+	int pass_time = 0;                          // 已经过去的时间（毫秒）
+	int wait_time = 0;                          // 目标等待时间（毫秒）
+	bool paused = false;                        // 是否已暂停
+	bool shotted = false;                       // 是否已触发过（用于单次模式）
+	bool one_shot = false;                      // 是否为单次触发模式
+	std::function<void()> callback;             // 无参数回调函数
+	std::function<void(int)> callback_int;      // 带整数参数的回调函数
 };
 
-#endif // !_TIMER_H_
+#endif

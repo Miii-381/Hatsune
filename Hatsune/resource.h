@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ 生成的包含文件。
-// 供 Hatsune.rc 使用
+// Microsoft Visual C++ ?????????????
+// ?? Hatsune.rc ???
 //
 #define IDI_ICON1                       101
 
